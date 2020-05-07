@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <style type="text/css">
+            body {color:black}
+            td {
+                vertical-align:top;
+            }
+            #ratinginfo {
+                border-collapse:collapse;
+            }
+            #ratinginfo td {
+                border: 1px solid black;
+            }
+            #ratinginfo td.rating0 {
+                color:#000000;
+                background-color:#FFFFFF;
+            }
+            #ratinginfo td.rating1 {
+                color:#000000;
+                background-color:#FFFFBF;
+            }
+            #ratinginfo td.rating2 {
+                color:#000000;
+                background-color:#FFFF00;
+            }
+            #ratinginfo td.rating3 {
+                color:#000000;
+                background-color:#FF7F00;
+            }
+            #ratinginfo td.rating4 {
+                color:#000000;
+                background-color:#FF3F00;
+            }
+            #ratinginfo td.rating5 {
+                color:#000000;
+                background-color:#FF0000;
+            }
+            h1 {font-size: 300%; text-align:center}
+            h2 {font-size: 200%; margin-top: 25px; margin-bottom: 0px; padding: 5px; background-color: #CCCCCC;}
+            h3 {font-size: 150%; font-weight: normal; padding: 5px; background-color: #EEEEEE; margin-top: 10px;}
+            #frontpage {height: 270px; background-color: #F3F3F3;}
+            p.ex {color:rgb(0,0,255)}
+
+            #auditinfo {            
+                font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+                /* width:100%; */
+                padding:10px 0px 0px 0px;
+                border-collapse:collapse;
+            }
+            #auditinfo td, #auditinfo th 
+            {
+            font-size:1em;
+            border:1px solid #989898;
+            padding:3px 7px 2px 7px;
+            }
+            #auditinfo th 
+            {
+            font-size:1.1em;
+            text-align:left;
+            padding-top:5px;
+            padding-bottom:4px;
+            background-color:#A7C942;
+            color:#ffffff;
+            }
+            #auditinfo tr.alt td 
+            {
+            color:#000000;
+            background-color:#EAF2D3;
+            }
+        </style>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <div id="frontpage">
+      <h1>
+        <p>Windows Privilege Escalation Report</p>
+        <p>Audit of Host: </p>
+        <p>remote</p>
+      </h1>
+    </div>
+  </head>
+  <body>
+    <h2>Contents</h2>
+    <p></p>
+    <table id="ratinginfo">
+      <tr>
+        <td>
+          <b>Impact</b>
+        </td>
+        <td>
+          <b>Ease of exploitation</b>
+        </td>
+        <td>
+          <b>Confidence</b>
+        </td>
+        <td>
+          <b>Title</b>
+        </td>
+      </tr>
+      <tr><td class="ratingNone">Not defined</td><td class="ratingNone">Not defined</td><td class="rating4">High</td><td><a href="#Interesting File Found (based on filename and contents)">Interesting File Found (based on filename and contents)</a></td></tr>
+      <tr><td class="ratingNone">Not defined</td><td class="ratingNone">Not defined</td><td class="rating3">Medium</td><td><a href="#Interesting File Found (based on filename)">Interesting File Found (based on filename)</a></td></tr>
+    </table>
+    <h2>Information about this Audit</h2>
+    <p>This report was generated on 2020-04-09 15:35 by version 2.0svn198 of <a href="http://pentestmonkey.net/windows-privesc-check">windows-privesc-check</a>.</p>
+    <p>The audit was run as the user WORKGROUP\REMOTE$.</p>
+    <p>The following table provides information about this audit:</p>
+    <table id="auditinfo">
+      <tr>
+        <td>Hostname</td>
+        <td>remote</td>
+      </tr>
+      <tr class="alt">
+        <td>Domain/Workgroup</td>
+        <td>IIS APPPOOL</td>
+      </tr>
+      <tr>
+        <td>Operating System</td>
+        <td>Windows 2012 (6.2.9200 SP0)</td>
+      </tr>
+      <tr class="alt">
+        <td>Is Domain Controller?</td>
+        <td>no</td>
+      </tr>
+      <tr>
+        <td>IP Addresses</td>
+        <td>10.10.10.180</td>
+      </tr>
+      <tr class="alt">
+        <td>Privesc Mode</td>
+        <td>report_untrusted</td>
+      </tr>
+      <tr>
+        <td>Principals considered untrusted (for exploitable_by mode)</td>
+        <td>N/A (running in report_untrusted mode)</td>
+      </tr>
+      <tr class="alt">
+        <td>Principals considered trusted (for report_untrusted mode)</td>
+        <td>BUILTIN\Power Users,BUILTIN\Administrators,NT SERVICE\TrustedInstaller,NT AUTHORITY\SYSTEM</td>
+      </tr>
+    </table>
+    <h2>Escalation Vectors</h2>
+    <hr />
+    <h3><a name="Interesting File Found (based on filename and contents)">Interesting File Found (based on filename and contents)</a></h3>
+    <table id="ratinginfo">
+      <tr><td style="width:140px">Impact</td><td style="width:90px" class="ratingNone">Not defined</td></tr>
+      <tr><td>Ease of exploitation</td><td class="ratingNone">Not defined</td></tr>
+      <tr><td>Confidence</td><td class="rating4">High</td></tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <b>description</b>
+        </td>
+        <td>
+          <p>Some files were found that (based on their filename and a regex match on the file contents) may contain interesting information. This is not necessarily a security issue, but may be of interest to pentesters looking for further their access to systems or auditor seeking to determine if sensitive information has been well protected.</p>
+          <p>The following files were affected:
+
+</p>
+          <ul>
+            <li>C:\inetpub\wwwroot\Web.config</li>
+            <li>C:\site_backups\Web.config</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <b>recommendation</b>
+        </td>
+        <td>
+          <p>Review the file list for sensistive information, ACLs and approriate use of encryption.</p>
+          <p></p>
+        </td>
+      </tr>
+    </table>
+    <hr />
+    <h3><a name="Interesting File Found (based on filename)">Interesting File Found (based on filename)</a></h3>
+    <table id="ratinginfo">
+      <tr><td style="width:140px">Impact</td><td style="width:90px" class="ratingNone">Not defined</td></tr>
+      <tr><td>Ease of exploitation</td><td class="ratingNone">Not defined</td></tr>
+      <tr><td>Confidence</td><td class="rating3">Medium</td></tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <b>description</b>
+        </td>
+        <td>
+          <p>Some files were found that (based on their filename) may contain interesting information. This is not necessarily a security issue, but may be of interest to pentesters looking for further their access to systems or auditor seeking to determine if sensitive information has been well protected.</p>
+          <p>The following files were affected:
+
+</p>
+          <ul>
+            <li>C:\inetpub\wwwroot\Web.config</li>
+            <li>C:\inetpub\wwwroot\Media\Web.config</li>
+            <li>C:\inetpub\wwwroot\Umbraco\Install\Views\Web.config</li>
+            <li>C:\inetpub\wwwroot\Umbraco\Js\web.config</li>
+            <li>C:\inetpub\wwwroot\Umbraco\Views\Preview\web.config</li>
+            <li>C:\inetpub\wwwroot\Umbraco\Xslt\Web.config</li>
+            <li>C:\inetpub\wwwroot\Views\Web.config</li>
+            <li>C:\site_backups\Web.config</li>
+            <li>C:\site_backups\Media\Web.config</li>
+            <li>C:\site_backups\Umbraco\Install\Views\Web.config</li>
+            <li>C:\site_backups\Umbraco\Js\web.config</li>
+            <li>C:\site_backups\Umbraco\Views\Preview\web.config</li>
+            <li>C:\site_backups\Umbraco\Xslt\Web.config</li>
+            <li>C:\site_backups\Views\Web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework\v2.0.50727\ASP.NETWebAdminFiles\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework\v2.0.50727\CONFIG\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework\v4.0.30319\ASP.NETWebAdminFiles\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework\v4.0.30319\Config\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework64\v2.0.50727\ASP.NETWebAdminFiles\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework64\v2.0.50727\CONFIG\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ASP.NETWebAdminFiles\web.config</li>
+            <li>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config</li>
+            <li>C:\Windows\Panther\unattend.xml</li>
+            <li>C:\Windows\Panther\unattend.xml</li>
+            <li>C:\Windows\System32\unattend.dll</li>
+            <li>C:\Windows\WinSxS\amd64_ipamprov-dcnps_31bf3856ad364e35_10.0.17763.1_none_90fd9849ea1e4266\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\amd64_ipamprov-dhcp_31bf3856ad364e35_10.0.17763.1_none_64f02b544b2506ef\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\amd64_ipamprov-dns_31bf3856ad364e35_10.0.17763.1_none_825235baef207c8d\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-d..cehealthattestation_31bf3856ad364e35_10.0.17763.1_none_7385652f0063fd94\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..-licensing-external_31bf3856ad364e35_10.0.17763.1_none_1484a0a04f158d16\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..-web-administration_31bf3856ad364e35_10.0.17763.1_none_a97e0fe7b2189444\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..-web-groupexpansion_31bf3856ad364e35_10.0.17763.1_none_b8ee1081f98feca4\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..certification-reach_31bf3856ad364e35_10.0.17763.1_none_7b67ab5d3cf90ff4\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..es-web-decommission_31bf3856ad364e35_10.0.17763.1_none_c8c4716b0bc2715a\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..s-web-certification_31bf3856ad364e35_10.0.17763.1_none_c79dad383913d1f6\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..tification-external_31bf3856ad364e35_10.0.17763.1_none_69a431f652c9d12c\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..vices-web-licensing_31bf3856ad364e35_10.0.17763.1_none_292f1fced45be7a2\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-r..web-licensing-reach_31bf3856ad364e35_10.0.17763.1_none_9db4bab5ff5b023e\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft-windows-setup-unattend_31bf3856ad364e35_10.0.17763.1_none_867ad3f3cde06ed7\unattend.dll</li>
+            <li>C:\Windows\WinSxS\amd64_microsoft.windows.r..ation.server.nongac_31bf3856ad364e35_10.0.17763.1_none_a1e107673df61b07\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_netfx-aspnet_webadmin_b03f5f7f11d50a3a_10.0.17763.1_none_544ec010c8f241db\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_netfx-aspnet_web_config_b03f5f7f11d50a3a_10.0.17763.1_none_128ca1cda24db319\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_netfx4-aspnet_webadmin_b03f5f7f11d50a3a_4.0.15713.0_none_a5d8238806c983c2\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_netfx4-web_config_b03f5f7f11d50a3a_4.0.15713.0_none_caa40ee4866463a4\web.config</li>
+            <li>C:\Windows\WinSxS\amd64_tsportalwebfeedlogin_31bf3856ad364e35_10.0.17763.1_none_508f86d034e6b277\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_tsportalwebfeed_31bf3856ad364e35_10.0.17763.1_none_279f66ef4644a87a\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_tsportalwebpart_31bf3856ad364e35_10.0.17763.1_none_255bdc0b47c49755\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_tsportalweb_31bf3856ad364e35_10.0.17763.1_none_328ef80a2d5d4d2e\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-apiremoting_31bf3856ad364e35_10.0.17763.1_none_d0d93d6f9639b2d1\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-client_31bf3856ad364e35_10.0.17763.1_none_eea8168153c84ecd\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-dssauth_31bf3856ad364e35_10.0.17763.1_none_0a5a547e01e3cb0c\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-reporting_31bf3856ad364e35_10.0.17763.1_none_0c59177650c0fe46\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-serversync_31bf3856ad364e35_10.0.17763.1_none_5470f198edc2907c\Web.config</li>
+            <li>C:\Windows\WinSxS\amd64_updateservices-webservices-simpleauth_31bf3856ad364e35_10.0.17763.1_none_2c0412375d548726\Web.config</li>
+            <li>C:\Windows\WinSxS\msil_microsoft-windows-p..ccess-web.resources_31bf3856ad364e35_10.0.17763.1_en-us_2af6e2a5d0b64d6c\Web.config</li>
+            <li>C:\Windows\WinSxS\msil_microsoft-windows-p..rshellwebaccess-web_31bf3856ad364e35_10.0.17763.1_none_5766cab0038a4b61\Web.config</li>
+            <li>C:\Windows\WinSxS\wow64_ipamprov-dcnps_31bf3856ad364e35_10.0.17763.1_none_9b52429c1e7f0461\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\wow64_ipamprov-dhcp_31bf3856ad364e35_10.0.17763.1_none_6f44d5a67f85c8ea\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\wow64_ipamprov-dns_31bf3856ad364e35_10.0.17763.1_none_8ca6e00d23813e88\ScheduledTasks.xml</li>
+            <li>C:\Windows\WinSxS\x86_netfx-aspnet_webadmin_b03f5f7f11d50a3a_10.0.17763.1_none_9bfbf6e7dd6e6ae1\web.config</li>
+            <li>C:\Windows\WinSxS\x86_netfx-aspnet_web_config_b03f5f7f11d50a3a_10.0.17763.1_none_5a39d8a4b6c9dc1f\web.config</li>
+            <li>C:\Windows\WinSxS\x86_netfx4-aspnet_webadmin_b03f5f7f11d50a3a_4.0.15713.0_none_ed855a5f1b45acc8\web.config</li>
+            <li>C:\Windows\WinSxS\x86_netfx4-web_config_b03f5f7f11d50a3a_4.0.15713.0_none_125145bb9ae08caa\web.config</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td>
+          <b>recommendation</b>
+        </td>
+        <td>
+          <p>Review the file list for sensistive information, ACLs and approriate use of encryption.</p>
+          <p></p>
+        </td>
+      </tr>
+    </table>
+    <h2>Appendices</h2>
+    <h2>Rating Definitions</h2>
+    <hr />
+    <h3><a name="ratingtypeimpact">impact</a></h3>
+    <table id="ratinginfo">
+      <tr>
+        <td>
+          <b>Level</b>
+        </td>
+        <td>
+          <b>Name</b>
+        </td>
+        <td>
+          <b>Description</b>
+        </td>
+      </tr>
+      <tr><td class="rating0">0</td><td class="rating0">N/A</td><td class="rating0">N/A</td></tr>
+      <tr><td class="rating1">1</td><td class="rating1">Very Low</td><td class="rating1">Hardly worth mentioning.</td></tr>
+      <tr><td class="rating2">2</td><td class="rating2">Low</td><td class="rating2">Not necessarily interesting alone, but may help with other attacks.</td></tr>
+      <tr><td class="rating3">3</td><td class="rating3">Medium</td><td class="rating3">Uncertain impact / Impact doesn't relate to command executation.</td></tr>
+      <tr><td class="rating4">4</td><td class="rating4">High</td><td class="rating4">Direct access to another user account - may not be admin.</td></tr>
+      <tr><td class="rating5">5</td><td class="rating5">Very High</td><td class="rating5">Directly get SYSTEM/Administrator privileges.</td></tr>
+    </table>
+    <hr />
+    <h3><a name="ratingtypeease">ease</a></h3>
+    <table id="ratinginfo">
+      <tr>
+        <td>
+          <b>Level</b>
+        </td>
+        <td>
+          <b>Name</b>
+        </td>
+        <td>
+          <b>Description</b>
+        </td>
+      </tr>
+      <tr><td class="rating0">0</td><td class="rating0">N/A</td><td class="rating0">N/A</td></tr>
+      <tr><td class="rating1">1</td><td class="rating1">Very Low</td><td class="rating1">Very complex to exploit / contrived or very unlikely exploitation scenarion.</td></tr>
+      <tr><td class="rating2">2</td><td class="rating2">Low</td><td class="rating2">Custom code required.</td></tr>
+      <tr><td class="rating3">3</td><td class="rating3">Medium</td><td class="rating3">Needs standard tools to be uploaded for exploitation / needs user assistance (less probable).</td></tr>
+      <tr><td class="rating4">4</td><td class="rating4">High</td><td class="rating4">Multiple easy steps. Need to wait for exploit to trigger / user assistance (probable).</td></tr>
+      <tr><td class="rating5">5</td><td class="rating5">Very High</td><td class="rating5">Can be done easily with builtin tools. Low number of steps. No need for command line.</td></tr>
+    </table>
+    <hr />
+    <h3><a name="ratingtypeconfidence">confidence</a></h3>
+    <table id="ratinginfo">
+      <tr>
+        <td>
+          <b>Level</b>
+        </td>
+        <td>
+          <b>Name</b>
+        </td>
+        <td>
+          <b>Description</b>
+        </td>
+      </tr>
+      <tr><td class="rating0">0</td><td class="rating0">N/A</td><td class="rating0">N/A</td></tr>
+      <tr><td class="rating1">1</td><td class="rating1">Very Low</td><td class="rating1">A lot more research is required to establish if the premise for the issue is correct and if exploitation would be viable in this instance.</td></tr>
+      <tr><td class="rating2">2</td><td class="rating2">Low</td><td class="rating2">Premise for issue is probably right, but the check is unreliable, inaccurate or incomplete.</td></tr>
+      <tr><td class="rating3">3</td><td class="rating3">Medium</td><td class="rating3">Reasonable idea for an attack. Success will be situation dependent. Need to verify manually.</td></tr>
+      <tr><td class="rating4">4</td><td class="rating4">High</td><td class="rating4">Strong issue. Probably viable, but some pre-requisite conditions not checked.</td></tr>
+      <tr><td class="rating5">5</td><td class="rating5">Very High</td><td class="rating5">Issue described is likely to be 100% accurate.</td></tr>
+    </table>
+  </body>
+</html>

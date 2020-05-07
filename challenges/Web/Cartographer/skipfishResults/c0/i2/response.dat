@@ -1,0 +1,33 @@
+HTTP/1.1 200 Partial Content
+Date: Tue, 11 Feb 2020 17:45:28 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Range: bytes 0-309/310
+Content-Length: 310
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+
+
+<html>
+<head>
+    <title>Cartographer - Login</title>
+    <link rel='stylesheet' href='style.css' type='text/css' />
+</head>
+<body>
+    <div class="content-container">
+        <div class="blur"></div>
+    </div>
+    <div class="loginform">
+        <center>
+            <img src="logo.png" /><br><br>
+            <form method="post">
+                <input class="textbox" type="text" name="username" placeholder="Username"><br><br>
+                <input class="textbox" type="password" name="password" placeholder="Password"><br><br>
+                <input class="loginbutton" type="submit" value="Login">
+            </form>
+        </center>
+    </div>
+</body>
+</html>

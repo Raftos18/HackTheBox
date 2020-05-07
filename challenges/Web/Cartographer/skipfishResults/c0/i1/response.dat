@@ -1,0 +1,17 @@
+HTTP/1.1 404 Not Found
+Date: Tue, 11 Feb 2020 17:45:28 GMT
+Server: Apache/2.4.18 (Ubuntu)
+Content-Length: 294
+Keep-Alive: timeout=5, max=99
+Connection: Keep-Alive
+Content-Type: text/html; charset=iso-8859-1
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL /sfi9876 was not found on this server.</p>
+<hr>
+<address>Apache/2.4.18 (Ubuntu) Server at docker.hackthebox.eu Port 30982</address>
+</body></html>

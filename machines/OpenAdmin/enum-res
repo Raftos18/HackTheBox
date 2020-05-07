@@ -1,0 +1,466 @@
+#########################################################
+-e # Local Linux Enumeration & Privilege Escalation Script #
+-e #########################################################
+-e # www.rebootuser.com
+-e # version 0.982
+
+[-] Debug Info
+-e [+] Thorough tests = Disabled
+-e 
+
+-e Scan started at:
+Fri Mar 13 20:13:50 UTC 2020
+-e 
+
+-e ### SYSTEM ##############################################
+-e [-] Kernel information:
+Linux openadmin 4.15.0-70-generic #79-Ubuntu SMP Tue Nov 12 10:36:11 UTC 2019 x86_64 x86_64 x86_64 GNU/Linux
+-e 
+
+-e [-] Kernel information (continued):
+Linux version 4.15.0-70-generic (buildd@lgw01-amd64-055) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #79-Ubuntu SMP Tue Nov 12 10:36:11 UTC 2019
+-e 
+
+-e [-] Specific release information:
+DISTRIB_ID=Ubuntu
+DISTRIB_RELEASE=18.04
+DISTRIB_CODENAME=bionic
+DISTRIB_DESCRIPTION="Ubuntu 18.04.3 LTS"
+NAME="Ubuntu"
+VERSION="18.04.3 LTS (Bionic Beaver)"
+ID=ubuntu
+ID_LIKE=debian
+PRETTY_NAME="Ubuntu 18.04.3 LTS"
+VERSION_ID="18.04"
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+VERSION_CODENAME=bionic
+UBUNTU_CODENAME=bionic
+-e 
+
+-e [-] Hostname:
+openadmin
+-e 
+
+-e ### USER/GROUP ##########################################
+-e [-] Current user/group info:
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+-e 
+
+-e [-] Users that have previously logged onto the system:
+Username         Port     From             Latest
+root             tty1                      Sat Jan  4 21:23:05 +0000 2020
+jimmy            pts/1    10.10.14.3       Thu Jan  2 20:50:03 +0000 2020
+joanna           pts/2    10.10.14.3       Thu Jan  2 21:12:40 +0000 2020
+-e 
+
+-e [-] Who else is logged on:
+ 20:13:50 up 21:37,  0 users,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+-e 
+
+-e [-] Group memberships:
+uid=0(root) gid=0(root) groups=0(root)
+uid=1(daemon) gid=1(daemon) groups=1(daemon)
+uid=2(bin) gid=2(bin) groups=2(bin)
+uid=3(sys) gid=3(sys) groups=3(sys)
+uid=4(sync) gid=65534(nogroup) groups=65534(nogroup)
+uid=5(games) gid=60(games) groups=60(games)
+uid=6(man) gid=12(man) groups=12(man)
+uid=7(lp) gid=7(lp) groups=7(lp)
+uid=8(mail) gid=8(mail) groups=8(mail)
+uid=9(news) gid=9(news) groups=9(news)
+uid=10(uucp) gid=10(uucp) groups=10(uucp)
+uid=13(proxy) gid=13(proxy) groups=13(proxy)
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+uid=34(backup) gid=34(backup) groups=34(backup)
+uid=38(list) gid=38(list) groups=38(list)
+uid=39(irc) gid=39(irc) groups=39(irc)
+uid=41(gnats) gid=41(gnats) groups=41(gnats)
+uid=65534(nobody) gid=65534(nogroup) groups=65534(nogroup)
+uid=100(systemd-network) gid=102(systemd-network) groups=102(systemd-network)
+uid=101(systemd-resolve) gid=103(systemd-resolve) groups=103(systemd-resolve)
+uid=102(syslog) gid=106(syslog) groups=106(syslog),4(adm)
+uid=103(messagebus) gid=107(messagebus) groups=107(messagebus)
+uid=104(_apt) gid=65534(nogroup) groups=65534(nogroup)
+uid=105(lxd) gid=65534(nogroup) groups=65534(nogroup)
+uid=106(uuidd) gid=110(uuidd) groups=110(uuidd)
+uid=107(dnsmasq) gid=65534(nogroup) groups=65534(nogroup)
+uid=108(landscape) gid=112(landscape) groups=112(landscape)
+uid=109(pollinate) gid=1(daemon) groups=1(daemon)
+uid=110(sshd) gid=65534(nogroup) groups=65534(nogroup)
+uid=1000(jimmy) gid=1000(jimmy) groups=1000(jimmy),1002(internal)
+uid=111(mysql) gid=114(mysql) groups=114(mysql)
+uid=1001(joanna) gid=1001(joanna) groups=1001(joanna),1002(internal)
+-e 
+
+-e [-] Contents of /etc/passwd:
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+lxd:x:105:65534::/var/lib/lxd/:/bin/false
+uuidd:x:106:110::/run/uuidd:/usr/sbin/nologin
+dnsmasq:x:107:65534:dnsmasq,,,:/var/lib/misc:/usr/sbin/nologin
+landscape:x:108:112::/var/lib/landscape:/usr/sbin/nologin
+pollinate:x:109:1::/var/cache/pollinate:/bin/false
+sshd:x:110:65534::/run/sshd:/usr/sbin/nologin
+jimmy:x:1000:1000:jimmy:/home/jimmy:/bin/bash
+mysql:x:111:114:MySQL Server,,,:/nonexistent:/bin/false
+joanna:x:1001:1001:,,,:/home/joanna:/bin/bash
+-e 
+
+-e [-] Super user account(s):
+root
+-e 
+
+-e [-] Are permissions on /home directories lax:
+total 16K
+drwxr-xr-x  4 root   root   4.0K Nov 22 18:00 .
+drwxr-xr-x 24 root   root   4.0K Nov 21 13:41 ..
+drwxr-x---  5 jimmy  jimmy  4.0K Nov 22 23:15 jimmy
+drwxr-x---  6 joanna joanna 4.0K Nov 28 09:37 joanna
+-e 
+
+-e ### ENVIRONMENTAL #######################################
+-e [-] Environment information:
+APACHE_RUN_DIR=/var/run/apache2
+APACHE_PID_FILE=/var/run/apache2/apache2.pid
+JOURNAL_STREAM=9:20571
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+INVOCATION_ID=db075a5f89a54045b4b2e6a1738e1ddb
+APACHE_LOCK_DIR=/var/lock/apache2
+LANG=C
+APACHE_RUN_USER=www-data
+APACHE_RUN_GROUP=www-data
+APACHE_LOG_DIR=/var/log/apache2
+PWD=/opt/ona/www
+-e 
+
+-e [-] Path information:
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+-e drwxr-xr-x 2 root root  4096 Nov 21 14:04 /bin
+drwxr-xr-x 2 root root 12288 Jan  2 13:46 /sbin
+drwxr-xr-x 2 root root 20480 Jan  2 13:24 /usr/bin
+drwxr-xr-x 2 root root  4096 Aug  5  2019 /usr/local/bin
+drwxr-xr-x 2 root root  4096 Aug  5  2019 /usr/local/sbin
+drwxr-xr-x 2 root root  4096 Jan  2 13:24 /usr/sbin
+-e 
+
+-e [-] Available shells:
+# /etc/shells: valid login shells
+/bin/sh
+/bin/bash
+/bin/rbash
+/bin/dash
+/usr/bin/tmux
+/usr/bin/screen
+-e 
+
+-e [-] Current umask value:
+0022
+u=rwx,g=rx,o=rx
+-e 
+
+-e [-] umask value as specified in /etc/login.defs:
+UMASK           022
+-e 
+
+-e [-] Password and storage information:
+PASS_MAX_DAYS   99999
+PASS_MIN_DAYS   0
+PASS_WARN_AGE   7
+ENCRYPT_METHOD SHA512
+-e 
+
+-e ### JOBS/TASKS ##########################################
+-e [-] Cron jobs:
+-rw-r--r-- 1 root root  722 Nov 16  2017 /etc/crontab
+
+/etc/cron.d:
+total 24
+drwxr-xr-x  2 root root 4096 Nov 21 14:12 .
+drwxr-xr-x 93 root root 4096 Jan  2 13:46 ..
+-rw-r--r--  1 root root  102 Nov 16  2017 .placeholder
+-rw-r--r--  1 root root  589 Jan 30  2019 mdadm
+-rw-r--r--  1 root root  712 Jan 17  2018 php
+-rw-r--r--  1 root root  191 Aug  5  2019 popularity-contest
+
+/etc/cron.daily:
+total 64
+drwxr-xr-x  2 root root 4096 Nov 21 14:08 .
+drwxr-xr-x 93 root root 4096 Jan  2 13:46 ..
+-rw-r--r--  1 root root  102 Nov 16  2017 .placeholder
+-rwxr-xr-x  1 root root  539 Jul 16  2019 apache2
+-rwxr-xr-x  1 root root  376 Nov 20  2017 apport
+-rwxr-xr-x  1 root root 1478 Apr 20  2018 apt-compat
+-rwxr-xr-x  1 root root  355 Dec 29  2017 bsdmainutils
+-rwxr-xr-x  1 root root 1176 Nov  2  2017 dpkg
+-rwxr-xr-x  1 root root  372 Aug 21  2017 logrotate
+100 73294    0 73157  100   137   3335      6  0:00:22  0:00:21  0:00:01 19750
+t 1065 Apr  7  2018 man-db
+-rwxr-xr-x  1 root root  539 Jan 30  2019 mdadm
+-rwxr-xr-x  1 root root  538 Mar  1  2018 mlocate
+-rwxr-xr-x  1 root root  249 Jan 25  2018 passwd
+-rwxr-xr-x  1 root root 3477 Feb 21  2018 popularity-contest
+-rwxr-xr-x  1 root root  246 Mar 21  2018 ubuntu-advantage-tools
+-rwxr-xr-x  1 root root  214 Nov 12  2018 update-notifier-common
+
+/etc/cron.hourly:
+total 12
+drwxr-xr-x  2 root root 4096 Aug  5  2019 .
+drwxr-xr-x 93 root root 4096 Jan  2 13:46 ..
+-rw-r--r--  1 root root  102 Nov 16  2017 .placeholder
+
+/etc/cron.monthly:
+total 12
+drwxr-xr-x  2 root root 4096 Aug  5  2019 .
+drwxr-xr-x 93 root root 4096 Jan  2 13:46 ..
+-rw-r--r--  1 root root  102 Nov 16  2017 .placeholder
+
+/etc/cron.weekly:
+total 20
+drwxr-xr-x  2 root root 4096 Aug  5  2019 .
+drwxr-xr-x 93 root root 4096 Jan  2 13:46 ..
+-rw-r--r--  1 root root  102 Nov 16  2017 .placeholder
+-rwxr-xr-x  1 root root  723 Apr  7  2018 man-db
+-rwxr-xr-x  1 root root  211 Nov 12  2018 update-notifier-common
+-e 
+
+-e [-] Crontab contents:
+# /etc/crontab: system-wide crontab
+# Unlike any other crontab you don't have to run the `crontab'
+# command to install the new version when you edit this file
+# and files in /etc/cron.d. These files also have username fields,
+# that none of the other crontabs do.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# m h dom mon dow user  command
+17 *    * * *   root    cd / && run-parts --report /etc/cron.hourly
+25 6    * * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.daily )
+47 6    * * 7   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.weekly )
+52 6    1 * *   root    test -x /usr/sbin/anacron || ( cd / && run-parts --report /etc/cron.monthly )
+#
+-e 
+
+-e [-] Systemd timers:
+NEXT                         LEFT          LAST                         PASSED       UNIT                         ACTIVATES
+Fri 2020-03-13 20:39:00 UTC  25min left    Fri 2020-03-13 20:09:16 UTC  4min 34s ago phpsessionclean.timer        phpsessionclean.service
+Fri 2020-03-13 22:52:12 UTC  2h 38min left Thu 2020-03-12 22:52:12 UTC  21h ago      systemd-tmpfiles-clean.timer systemd-tmpfiles-clean.service
+Sat 2020-03-14 03:35:55 UTC  7h left       Fri 2020-03-13 14:52:39 UTC  5h 21min ago motd-news.timer              motd-news.service
+Sat 2020-03-14 06:55:49 UTC  10h left      Fri 2020-03-13 06:05:47 UTC  14h ago      apt-daily-upgrade.timer      apt-daily-upgrade.service
+Sat 2020-03-14 15:19:03 UTC  19h left      Fri 2020-03-13 19:56:39 UTC  17min ago    apt-daily.timer              apt-daily.service
+Mon 2020-03-16 00:00:00 UTC  2 days left   Thu 2020-03-12 22:37:02 UTC  21h ago      fstrim.timer                 fstrim.service
+
+6 timers listed.
+Enable thorough tests to see inactive timers
+-e 
+
+-e ### NETWORKING  ##########################################
+-e [-] Network and IP info:
+ens160: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.10.10.171  netmask 255.255.255.0  broadcast 10.10.10.255
+        inet6 fe80::250:56ff:feb9:c669  prefixlen 64  scopeid 0x20<link>
+        inet6 dead:beef::250:56ff:feb9:c669  prefixlen 64  scopeid 0x0<global>
+        ether 00:50:56:b9:c6:69  txqueuelen 1000  (Ethernet)
+        RX packets 2160654  bytes 573905404 (573.9 MB)
+        RX errors 0  dropped 147  overruns 0  frame 0
+        TX packets 1699213  bytes 351567792 (351.5 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 209449  bytes 14883979 (14.8 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 209449  bytes 14883979 (14.8 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+-e 
+
+-e [-] ARP history:
+_gateway (10.10.10.2) at 00:50:56:b9:aa:aa [ether] on ens160
+-e 
+
+-e [-] Nameserver(s):
+nameserver 127.0.0.53
+-e 
+
+-e [-] Nameserver(s):
+Global
+          DNSSEC NTA: 10.in-addr.arpa
+                      16.172.in-addr.arpa
+                      168.192.in-addr.arpa
+                      17.172.in-addr.arpa
+                      18.172.in-addr.arpa
+                      19.172.in-addr.arpa
+                      20.172.in-addr.arpa
+                      21.172.in-addr.arpa
+                      22.172.in-addr.arpa
+                      23.172.in-addr.arpa
+                      24.172.in-addr.arpa
+                      25.172.in-addr.arpa
+                      26.172.in-addr.arpa
+                      27.172.in-addr.arpa
+                      28.172.in-addr.arpa
+                      29.172.in-addr.arpa
+                      30.172.in-addr.arpa
+                      31.172.in-addr.arpa
+                      corp
+                      d.f.ip6.arpa
+                      home
+                      internal
+                      intranet
+                      lan
+                      local
+                      private
+                      test
+
+Link 2 (ens160)
+      Current Scopes: none
+       LLMNR setting: yes
+MulticastDNS setting: no
+      DNSSEC setting: no
+    DNSSEC supported: no
+-e 
+
+-e [-] Default route:
+default         _gateway        0.0.0.0         UG    0      0        0 ens160
+-e 
+
+-e [-] Listening TCP:
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -                   
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:52846         0.0.0.0:*               LISTEN      -                   
+tcp6       0      0 :::22                   :::*                    LISTEN      -                   
+tcp6       0      0 :::80                   :::*                    LISTEN      -                   
+-e 
+
+-e [-] Listening UDP:
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+udp        0      0 127.0.0.53:53           0.0.0.0:*                           -                   
+-e 
+
+-e ### SERVICES #############################################
+-e [-] Running processes:
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.4 225172  8968 ?        Ss   Mar12   0:05 /sbin/init auto automatic-ubiquity noprompt
+root         2  0.0  0.0      0     0 ?        S    Mar12   0:00 [kthreadd]
+root         4  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kworker/0:0H]
+root         6  0.0  0.0      0     0 ?        I<   Mar12   0:00 [mm_percpu_wq]
+root         7  0.0  0.0      0     0 ?        S    Mar12   0:00 [ksoftirqd/0]
+root         8  0.0  0.0      0     0 ?        I    Mar12   0:26 [rcu_sched]
+root         9  0.0  0.0      0     0 ?        I    Mar12   0:00 [rcu_bh]
+root        10  0.0  0.0      0     0 ?        S    Mar12   0:00 [migration/0]
+root        11  0.0  0.0      0     0 ?        S    Mar12   0:00 [watchdog/0]
+root        12  0.0  0.0      0     0 ?        S    Mar12   0:00 [cpuhp/0]
+root        13  0.0  0.0      0     0 ?        S    Mar12   0:00 [cpuhp/1]
+root        14  0.0  0.0      0     0 ?        S    Mar12   0:00 [watchdog/1]
+root        15  0.0  0.0      0     0 ?        S    Mar12   0:00 [migration/1]
+root        16  0.0  0.0      0     0 ?        S    Mar12   0:00 [ksoftirqd/1]
+root        18  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kworker/1:0H]
+root        19  0.0  0.0      0     0 ?        S    Mar12   0:00 [kdevtmpfs]
+root        20  0.0  0.0      0     0 ?        I<   Mar12   0:00 [netns]
+root        21  0.0  0.0      0     0 ?        S    Mar12   0:00 [rcu_tasks_kthre]
+root        22  0.0  0.0      0     0 ?        S    Mar12   0:00 [kauditd]
+root        24  0.0  0.0      0     0 ?        S    Mar12   0:00 [khungtaskd]
+root        25  0.0  0.0      0     0 ?        S    Mar12   0:00 [oom_reaper]
+root        26  0.0  0.0      0     0 ?        I<   Mar12   0:00 [writeback]
+root        27  0.0  0.0      0     0 ?        S    Mar12   0:00 [kcompactd0]
+root        28  0.0  0.0      0     0 ?        SN   Mar12   0:00 [ksmd]
+root        29  0.0  0.0      0     0 ?        SN   Mar12   0:00 [khugepaged]
+root        30  0.0  0.0      0     0 ?        I<   Mar12   0:00 [crypto]
+root        31  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kintegrityd]
+root        32  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kblockd]
+root        33  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ata_sff]
+root        34  0.0  0.0      0     0 ?        I<   Mar12   0:00 [md]
+root        35  0.0  0.0      0     0 ?        I<   Mar12   0:00 [edac-poller]
+root        36  0.0  0.0      0     0 ?        I<   Mar12   0:00 [devfreq_wq]
+root        37  0.0  0.0      0     0 ?        I<   Mar12   0:00 [watchdogd]
+root        41  0.0  0.0      0     0 ?        S    Mar12   0:00 [kswapd0]
+root        42  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kworker/u5:0]
+root        43  0.0  0.0      0     0 ?        S    Mar12   0:00 [ecryptfs-kthrea]
+root        85  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kthrotld]
+root        86  0.0  0.0      0     0 ?        I<   Mar12   0:00 [acpi_thermal_pm]
+root        87  0.0  0.0      0     0 ?        S    Mar12   0:00 [scsi_eh_0]
+root        88  0.0  0.0      0     0 ?        I<   Mar12   0:00 [scsi_tmf_0]
+root        89  0.0  0.0      0     0 ?        S    Mar12   0:00 [scsi_eh_1]
+root        90  0.0  0.0      0     0 ?        I<   Mar12   0:00 [scsi_tmf_1]
+root        96  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ipv6_addrconf]
+root       105  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kstrp]
+root       122  0.0  0.0      0     0 ?        I<   Mar12   0:00 [charger_manager]
+root       175  0.0  0.0      0     0 ?        I<   Mar12   0:00 [mpt_poll_0]
+root       183  0.0  0.0      0     0 ?        I<   Mar12   0:00 [mpt/0]
+root       214  0.0  0.0      0     0 ?        S    Mar12   0:00 [scsi_eh_2]
+root       215  0.0  0.0      0     0 ?        I<   Mar12   0:00 [scsi_tmf_2]
+root       216  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ttm_swap]
+root       217  0.0  0.0      0     0 ?        S    Mar12   0:00 [irq/16-vmwgfx]
+root       219  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kworker/0:1H]
+root       221  0.0  0.0      0     0 ?        I<   Mar12   0:00 [kworker/1:1H]
+root       289  0.0  0.0      0     0 ?        I<   Mar12   0:00 [raid5wq]
+root       341  0.0  0.0      0     0 ?        S    Mar12   0:00 [jbd2/sda2-8]
+root       342  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ext4-rsv-conver]
+root       400  0.0  0.7  94900 15736 ?        S<s  Mar12   0:00 /lib/systemd/systemd-journald
+root       403  0.0  0.0      0     0 ?        I<   Mar12   0:00 [iscsi_eh]
+root       404  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ib-comp-wq]
+root       405  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ib-comp-unb-wq]
+root       406  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ib_mcast]
+root       407  0.0  0.0      0     0 ?        I<   Mar12   0:00 [ib_nl_sa_wq]
+root       408  0.0  0.0      0     0 ?        I<   Mar12   0:00 [rdma_cm]
+root       411  0.0  0.0  97708  1724 ?        Ss   Mar12   0:00 /sbin/lvmetad -f
+root       423  0.0  0.0      0     0 ?        I    19:09   0:00 [kworker/1:1]
+root       425  0.0  0.3  47528  6460 ?        Ss   Mar12   0:03 /lib/systemd/systemd-udevd
+root       450  0.0  0.0      0     0 ?        S<   Mar12   0:00 [loop0]
+root       453  0.0  0.0      0     0 ?        S<   Mar12   0:00 [loop1]
+systemd+   463  0.0  0.2  71848  5372 ?        Ss   Mar12   0:00 /lib/systemd/systemd-networkd
+systemd+   464  0.0  0.1 141928  3232 ?        Ssl  Mar12   0:06 /lib/systemd/systemd-timesyncd
+root       468  0.0  0.4  88224  9576 ?        Ss   Mar12   0:00 /usr/bin/VGAuthService
+systemd+   488  0.0  0.2  70628  5360 ?        Ss   Mar12   0:05 /lib/systemd/systemd-resolved
+root       530  0.0  0.0      0     0 ?        I    19:39   0:00 [kworker/u4:1]
+root       557  0.0  0.5 191836 11564 ?        Ssl  Mar12   0:51 /usr/bin/vmtoolsd
+message+   558  0.0  0.2  50136  4848 ?        Ss   Mar12   0:00 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root       564  0.0  0.0 383252  1764 ?        Ssl  Mar12   0:00 /usr/bin/lxcfs /var/lib/lxcfs/
+root       572  0.0  0.0 110544  2000 ?        Ssl  Mar12   0:02 /usr/sbin/irqbalance --foreground
+daemon     574  0.0  0.1  28332  2392 ?        Ss   Mar12   0:00 /usr/sbin/atd -f
+syslog     576  0.0  0.2 263036  4744 ?        Ssl  Mar12   0:00 /usr/sbin/rsyslogd -n
+root       580  0.0  0.1  30028  3240 ?        Ss   Mar12   0:00 /usr/sbin/cron -f
+root       581  0.0  0.8 169096 17240 ?        Ssl  Mar12   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root       582  0.0  0.2  62136  5712 ?        Ss   Mar12   0:00 /lib/systemd/systemd-logind
+root       584  0.0  0.3 286356  6992 ?        Ssl  Mar12   0:01 /usr/lib/accountsservice/accounts-daemon
+root       592  0.0  0.0      0     0 ?        I    19:56   0:00 [kworker/u4:2]
+root       595  0.0  1.2 854660 26220 ?        Ssl  Mar12   0:05 /usr/lib/snapd/snapd
+root       611  0.0  0.0      0     0 ?        I    19:56   0:00 [kworker/0:2]
+root       672  0.0  0.3 288880  6620 ?        Ssl  Mar12   0:00 /usr/lib/policykit-1/polkitd --no-debug
+root       744  0.0  0.0      0     0 ?        I    20:09   0:00 [kworker/u4:0]
+root       756  0.0  0.0      0     0 ?        I    20:09   0:00 [kworker/1:2]
+www-data   815  0.0  0.7 376136 14908 ?        S    20:13   0:00 /usr/sbin/apache2 -k start
+
+
+

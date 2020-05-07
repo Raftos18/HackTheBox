@@ -1,0 +1,19 @@
+
+
+Fri Mar 27 22:35:05 2020
+Command line: TestDisk
+
+TestDisk 7.1, Data Recovery Utility, July 2019
+Christophe GRENIER <grenier@cgsecurity.org>
+https://www.cgsecurity.org
+OS: Linux, kernel 5.3.0-kali2-amd64 (#1 SMP Debian 5.3.9-3kali1 (2019-11-20)) x86_64
+Compiler: GCC 9.2
+ext2fs lib: 1.45.4, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.1
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+/dev/sr0 is not an ATA disk
+Hard disk list
+Disk /dev/sda - 21 GB / 20 GiB - CHS 2610 255 63, sector size=512 - VMware, VMware Virtual S, FW:1.0
+Disk /dev/sr0 - 2763 MB / 2635 MiB - 1349558 sectors (RO), sector size=2048 - VMware Virtual SATA CDRW Drive, S/N:01000000000000000001, FW:00000001
+
+
+TestDisk exited normally.
