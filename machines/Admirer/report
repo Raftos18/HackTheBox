@@ -1,0 +1,66 @@
+* nmap scan showed on port 80 /admin-dir but the dir is Forbidden*
+
+??? a******.p*p ???
+??? A******.p** ???
+
+xxx admirer.php xxx
+xxx adminer.php xxx
+xxx adminer.php xxx
+xxx admin-r.php xxx
+xxx adminir.php xxx
+xxx adminrr.php xxx
+ccc Ad****r.php ccc
+xxx Admirer.php xxx
+xxx Adminer.php xxx
+xxx Admirer.php xxx
+    admster.php
+    
+
+ 
+-- Dirb wordlists --
+* gobuster on '/' with dirb/common.txt *
+
+/.hta (Status: 403)
+/.htaccess (Status: 403)
+/.htpasswd (Status: 403)
+/assets (Status: 301)
+/images (Status: 301)
+/index.php (Status: 200)
+/index.php (Status: 200)
+/robots.txt (Status: 200)
+/server-status (Status: 403)
+
+- robots.txt had some intresting info, also we may have confirmation that /admin-dir has contacts and creds *
+    User-agent: *
+
+    # This folder contains personal contacts and creds, so no one -not even robots- should see it - waldo (NOTE: 'waldo' could be a user)
+    Disallow: /admin-dir
+
+
+
+
+
+* gobuster on '/admin-dir' with dirb/common.txt *
+    /contacts.txt (Status: 200)
+
+
+
+
+-- wfuzz wordlists --
+* gobuster on '/admin-dir' with wfuzz/common.txt *
+/contacts.txt
+
+
+
+
+-- wfuzz wordlists --
+* gobuster on '/admin-dir' with wfuzz/megabeast.txt and -x 'php'*
+
+
+
+
+
+* gobuster on '/' with ... *
+/images (Status: 301)
+/assets (Status: 301)
+/server-status (Status: 403)

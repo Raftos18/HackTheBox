@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Sun May 10 12:02:55 2020 as: nmap -p- -oA nmap/allports 10.10.10.187
+Host: 10.10.10.187 (10.10.10.187)	Status: Up
+Host: 10.10.10.187 (10.10.10.187)	Ports: 21/open/tcp//ftp///, 22/open/tcp//ssh///, 80/open/tcp//http///	Ignored State: closed (65532)
+# Nmap done at Sun May 10 12:04:42 2020 -- 1 IP address (1 host up) scanned in 107.40 seconds
