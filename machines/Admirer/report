@@ -16,6 +16,9 @@ xxx Admirer.php xxx
     admster.php
     
 
+* Someone on Discord said this is the correct one => "adminer.php" *
+
+
  
 -- Dirb wordlists --
 * gobuster on '/' with dirb/common.txt *
