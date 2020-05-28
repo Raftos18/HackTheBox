@@ -1,0 +1,5 @@
+/.htaccess (Status: 403)
+/.htpasswd (Status: 403)
+/javascript (Status: 301)
+/jquery (Status: 301)
+/server-status (Status: 403)

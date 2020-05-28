@@ -17,8 +17,6 @@ xxx Admirer.php xxx
     
 
 * Someone on Discord said this is the correct one => "adminer.php" *
-
-
  
 -- Dirb wordlists --
 * gobuster on '/' with dirb/common.txt *
@@ -39,31 +37,27 @@ xxx Admirer.php xxx
     # This folder contains personal contacts and creds, so no one -not even robots- should see it - waldo (NOTE: 'waldo' could be a user)
     Disallow: /admin-dir
 
+/contacts.txt (Status: 200)
+/credentials.txt (Status: 200)
+
+
+using the ftp user from the credentials.txt is succesful
+the same creds seem to work for ssh according to hydra but when connecting 
+over ssh the connection is closed immidiatly
+
+Someone said this:
+Actually, is not the creds that has a typo. The p*p file you need is something beween
+the name of the machine and the r*****.t** directory.
+Just no "-". This might be a spoiler, but it was the strangest part of the box. 
+PM me for more (as far as I have reached ofc)
+
+
+The list to use is /dirb/big.txt
+and the admin page is most propably adminer.php
 
 
 
-
-* gobuster on '/admin-dir' with dirb/common.txt *
-    /contacts.txt (Status: 200)
-
-
-
-
--- wfuzz wordlists --
-* gobuster on '/admin-dir' with wfuzz/common.txt *
-/contacts.txt
-
-
-
-
--- wfuzz wordlists --
-* gobuster on '/admin-dir' with wfuzz/megabeast.txt and -x 'php'*
-
-
-
-
-
-* gobuster on '/' with ... *
-/images (Status: 301)
-/assets (Status: 301)
-/server-status (Status: 403)
+You are definitely on the right track I am guessing you came to the conclusion of Adminer from a Google search of the boxes name. 
+There are tons of rabbit holes in the zip file to throw you off however, it is a backup, and backups tell you a lot about how a developer has structured their site. 
+So continue your enumeration as normal but think about which directory would be the most interesting poke around at. 
+I think I am basically spoiling it at this point but let me know if you have anymore questions.

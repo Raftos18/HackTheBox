@@ -1,0 +1,22 @@
+/cgi-bin/ (Status: 403) => Nothing here
+/index (Status: 200)
+/test (Status: 200) => This has a lot of info
+/rename => A script that allows you to rename files
+/torrent => A application maybe exploitable
+
+
+I created a user "myuser" with password "myuser" on /torrent to test
+Uploaded a torrent file and followed the link to its page
+There i could als upload an image as a logo
+The images had hidden php code in its header
+Then i just needed to rename the image file because it had an jpg extension and i needed a php
+How convinient to have rename functonality on the server 
+http://10.10.10.6/rename/?filename=/var/www/torrent/upload/9fc20b9e98ea98b4a35e6223041a5ef94ea27809.jpeg&newfilename=/var/www/torrent/upload/9fc20b9e98ea98b4a35e6223041a5ef94ea27809.jpeg.php
+
+
+* Running "uname -a" returns info about the machine and kernel*
+Linux popcorn 2.6.31-14-generic-pae #48-Ubuntu SMP Fri Oct 16 15:22:42 UTC 2009 i686 GNU/Linux
+
+Seeing the kernel is from 2009 we can try dirty cow which will give us root access
+
+
