@@ -1,0 +1,5 @@
+file = open('wordlist-material', 'r')
+data = file.read()
+words = data.replace(' ', '\r\n').replace(',', '').replace('.', '')
+file = open('passwords', 'w')
+file.write(words)

