@@ -112,4 +112,6 @@ msf5 > irb
 >> 
 ]
 
+* Using the new user s.smith i can see in the Audit$ share, which has CascAutit.exe,
+running the exe will give me a password i need *
 
