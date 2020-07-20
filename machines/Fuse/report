@@ -1,0 +1,43 @@
+
+domain = fabricorp.local
+
+* The server is a windows active domain *
+
+* It has port 80 open unlike many other similar machines *
+
+* rpcclient -U '' 10.10.10.193 connects as anonymous user but access is denied on actions * 
+
+* crackmapexec smb 10.10.10.193 --pass-pol does not dump password policy *
+
+* Looking through the website (papercut) we get some users *
+
+pmerton
+tlavel
+sthompson
+bhult
+administrator
+
+
+* Trying a null aythentication for the user on smb gets us nothing *
+crackmapexec smb 10.10.10.193 -u users -p "" 
+SMB         10.10.10.193    445    FUSE             [*] Windows Server 2016 Standard 14393 x64 (name:FUSE) (domain:FABRICORP) (signing:True) (SMBv1:True)
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\pmerton: STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\tlavel: STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\sthompson: STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\bhult: STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\administrator: STATUS_LOGON_FAILURE 
+
+
+* The same goes for all the other crackmapexec options *
+
+
+* Using hashcat and the users we have so far to perform a password spray, although it is a bit risky without having read the
+password policy *
+
+hashcat --force --stdout -r /usr/share/hashcat/rules/best64.rule users > passwords
+
+* Looking through ldapsearch gets me nothing useful *
+ldapsearch -h 10.10.10.193 -x -b "DC=FABRICORP,DC=local" '(objectClass=Person)'
+
+
+the user password requires password spraying and the data come propably from the web page

