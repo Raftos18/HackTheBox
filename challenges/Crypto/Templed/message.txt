@@ -1,3 +1,5 @@
 72 84 66 123 77 48 78 107 115 95 107 78 51 119 33 125 
 
 HTB{M0Nks_kN3w!}
+
+https://en.wikipedia.org/wiki/The_Ciphers_of_the_Monks
