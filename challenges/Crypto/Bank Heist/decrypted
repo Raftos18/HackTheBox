@@ -1,0 +1,6 @@
+if you are reading the cipher you are okay your share of the heist is in your house the key to the lock is below go to paris gsv xlwv gl gsv hzu olxp tlivgrivnvmgufmw
+
+Note: we use Atbash cipher in the last part "gsv xlwv gl gsv hzu olxp tlivgrivnvmgufmw"
+which yields the message "the code to the saf lock goretirementfund" we just need to append the last two characters we removed !!
+flag: HTB{GORETIREMENTFUND!!}
+
