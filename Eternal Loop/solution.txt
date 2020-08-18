@@ -1,0 +1,7 @@
+After creating a script to unzip files
+until we find a file that cannot be unzipped 
+we get to the last zip 6969.zip
+
+We use fcrackzip with rockyou.txt and get password "pleaseletmein"
+if we open the final file with vscode or some other editor we see
+a db file. Searching for the HTB keyword gets us the flag.
