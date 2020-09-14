@@ -1,0 +1,17 @@
+- Scanning with nmap we find two open ports 
+
+  80/tcp open  http    OpenBSD httpd
+  22/tcp open  ssh     OpenSSH 8.1 (protocol 2.0)
+
+- Scanning port 80 for directories with dibuster
+
+  we find an includes dir with some php files inside
+
+  Downloading the auth.php.swp file and opening it with vim recreates the file which leads to an RE rabbit hole :((
+  If you use strings on the same file it yields some credentials
+  username: jennifer
+  
+	
+
+[For system priv esc check https://www.secpod.com/blog/openbsd-authentication-bypass-and-local-privilege-escalation-vulnerabilities/]
+In OpenBSD 6.6, local users can use the su -L option to achieve any login class (often excluding root) because there is a logic error in the main function in su/su.c.
